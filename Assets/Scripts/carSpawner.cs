@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class carSpawner : MonoBehaviour
+public class carSpawner : NetworkBehaviour
 {
 
     public GameObject car;
@@ -18,12 +19,20 @@ public class carSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!IsServer) return;
+
         timer -= Time.deltaTime;
 
         if(timer <= 0) {
             Vector3 carPos = new Vector3(Random.Range(-maxPos, maxPos), transform.position.y, transform.position.z);
-            Instantiate (car, carPos, transform.rotation);
+            CarSpawnerServerRPC (carPos);
             timer = delayTimer;
         }
+    }
+
+    [ServerRpc]
+    private void CarSpawnerServerRPC(Vector3 carPosition){
+        GameObject carInstance = Instantiate(car, carPosition, transform.rotation);
+        carInstance.GetComponent<NetworkObject>().Spawn();
     }
 }
