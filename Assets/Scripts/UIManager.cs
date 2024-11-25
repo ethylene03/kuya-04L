@@ -6,7 +6,10 @@ public class UIManager : MonoBehaviour
 {
     public TMP_Text pauseBTN; 
     public TMP_Text textTimer;
+    public TMP_Text counter;
     private float time = 0f;
+
+    private float startTimer = 0f; 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,7 +20,12 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
+        if(startTimer >= 6) {
+            time += Time.deltaTime;
+        } else {
+            startTimer += Time.deltaTime;
+        }
+
         DisplayTime(time);
     }
 
@@ -39,5 +47,28 @@ public class UIManager : MonoBehaviour
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
         textTimer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    // change start counter
+    public void Counter() {
+        int count = (int)startTimer / 2;
+        switch(count) {
+            case 0:
+                counter.text = "3";
+                break;
+
+            case 1:
+                counter.text = "2";
+                break;
+
+            case 2:
+                counter.text = "3";
+                break;
+
+            case 3:
+                counter.text = "Go!";
+                globalVariables.startGame = true;
+                break;
+        }
     }
 }
