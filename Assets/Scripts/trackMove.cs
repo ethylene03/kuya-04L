@@ -11,7 +11,16 @@ public class trackMove : MonoBehaviour
     }
 
     void Update() {
-        offset = new Vector2(0, Time.time * speed);
-        GetComponent<Renderer> ().material.mainTextureOffset = offset;
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            globalVariables.startGame = !globalVariables.startGame;
+        }
+
+        if(globalVariables.startGame) {
+            Time.timeScale = 1;
+            offset = new Vector2(0, Time.time * speed);
+            GetComponent<Renderer> ().material.mainTextureOffset = offset;
+        } else {
+            Time.timeScale = 0;
+        }
     }
 }
