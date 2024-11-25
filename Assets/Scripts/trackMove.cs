@@ -3,7 +3,6 @@ using System.Collections;
 
 public class trackMove : MonoBehaviour
 {
-    public float speed;
     Vector2 offset;
 
     void Start() {
@@ -17,7 +16,7 @@ public class trackMove : MonoBehaviour
 
         if(globalVariables.startGame) {
             Time.timeScale = 1;
-            offset = new Vector2(0, Time.time * speed);
+            offset = new Vector2(0, Time.time * globalVariables.playerSpeed);
             GetComponent<Renderer> ().material.mainTextureOffset = offset;
         } else {
             Time.timeScale = 0;

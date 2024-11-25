@@ -18,7 +18,11 @@ public class carSpawner : MonoBehaviour
     void Update()
     {
         if(globalVariables.startGame) {
-            globalVariables.timer -= Time.deltaTime;
+            if(globalVariables.timer > delayTimer) {
+                globalVariables.timer -= globalVariables.playerSpeed / Time.deltaTime; // change interval according to speed of player
+            } else {
+                globalVariables.timer -= Time.deltaTime;
+            }
 
             if(globalVariables.timer <= 0) {
                 // get random car

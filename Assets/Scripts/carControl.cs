@@ -3,12 +3,16 @@ using UnityEngine.UIElements;
 
 public class carControl : MonoBehaviour
 {
-    public float carSpeed;
+    public float carSpeed = 5.0f;
+    public float speedInterval = 0.1f;
     public float maxPos = 5.3f;
     Vector3 position;
     public GameObject background;
     public GameObject spawn;
     public Joystick movementJoystick;
+    private bool isAccelerating = false;
+    private bool isBraking = false;
+    private bool isSlowingDown = false;
 
     void Start()
     {
@@ -20,6 +24,18 @@ public class carControl : MonoBehaviour
         position.x += movementJoystick.Direction.x * carSpeed * Time.deltaTime;
         position.x = Mathf.Clamp (position.x, -maxPos, maxPos);
         transform.position = position;
+
+        if(isAccelerating) {
+            Accelerate();
+        }
+
+        if(isBraking) {
+            Brake();
+        }
+
+        if(isSlowingDown) {
+            SlowDown();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col) {
@@ -30,5 +46,41 @@ public class carControl : MonoBehaviour
             // endgame (pause)
             globalVariables.startGame = false;
         }
+    }
+
+    private void Accelerate() {
+        if(globalVariables.playerSpeed < globalVariables.maxPlayerSpeed) {
+            globalVariables.playerSpeed += speedInterval * Time.deltaTime;
+        }
+    }
+
+    private void SlowDown() {
+        if(globalVariables.playerSpeed > speedInterval) {
+            globalVariables.playerSpeed -= speedInterval * Time.deltaTime;
+        } else {
+            globalVariables.playerSpeed = 0;
+        }
+    }
+
+    private void Brake() {
+        globalVariables.playerSpeed = 0;
+    }
+
+    public void setAccelerate() {
+        isAccelerating = true;
+        isBraking = false;
+        isSlowingDown = false;
+    }
+
+    public void setSlowDown() {
+        isSlowingDown = true;
+        isAccelerating = false;
+        isBraking = false;
+    }
+
+    public void setBrake() {
+        isBraking = true;
+        isAccelerating = false;
+        isSlowingDown = false;
     }
 }
