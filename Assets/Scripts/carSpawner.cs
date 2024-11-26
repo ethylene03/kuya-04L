@@ -8,6 +8,8 @@ public class carSpawner : MonoBehaviour
     public float minPos = -5.3f;
     public float delayTimer = 5f;
 
+    private float prevSpeed = 0;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,7 +34,14 @@ public class carSpawner : MonoBehaviour
                 Vector3 carPos = new Vector3(Random.Range(minPos, maxPos), transform.position.y, transform.position.z);
                 
                 // spawn car
-                Instantiate (cars[idx], carPos, transform.rotation);
+                GameObject newCar = Instantiate (cars[idx], carPos, transform.rotation);
+                oppCarControl carScript = newCar.GetComponent<oppCarControl>();
+
+                // adjust spawned car's base speed to be between prev base speed and max base speed
+                if(carScript != null) {
+                    carScript.BaseSpeed = prevSpeed;
+                    prevSpeed = carScript.BaseSpeed;
+                }
                 
                 // set timer back to delay time
                 globalVariables.timer = delayTimer;
