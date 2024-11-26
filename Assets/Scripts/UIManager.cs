@@ -35,15 +35,6 @@ public class UIManager : MonoBehaviour
 
     public void Pause() {
         globalVariables.startGame = !globalVariables.startGame;
-
-        // if game is running
-        if(Time.timeScale == 1) {
-            pauseBTN.text = "D";
-
-        // if game is paused
-        } else if(Time.timeScale == 0) {
-            pauseBTN.text = "II";
-        }
     }
 
     // display timerTime in text format
