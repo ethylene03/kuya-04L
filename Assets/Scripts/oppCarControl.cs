@@ -22,7 +22,7 @@ public class oppCarControl : MonoBehaviour
     void OnCollisionEnter2D(Collision2D col) {
         if(col.gameObject.tag == "EnemyCar" && gameObject.tag == "EnemyCar") {
             Destroy (col.gameObject);
-            Destroy (gameObject);
+            // Destroy (gameObject);
         }
     }
 }

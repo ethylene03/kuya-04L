@@ -18,8 +18,8 @@ public class carSpawner : MonoBehaviour
     void Update()
     {
         if(globalVariables.startGame) {
-            if(globalVariables.timer > delayTimer) {
-                globalVariables.timer -= globalVariables.playerSpeed / Time.deltaTime; // change interval according to speed of player
+            if(globalVariables.playerSpeed > 0) {
+                globalVariables.timer -= Time.deltaTime * globalVariables.playerSpeed * 2; // change interval according to speed of player
             } else {
                 globalVariables.timer -= Time.deltaTime;
             }
