@@ -7,26 +7,30 @@ public class UIManager : MonoBehaviour
     public TMP_Text pauseBTN; 
     public TMP_Text textTimer;
     public TMP_Text counter;
-    private float time = 0f;
+    private float timerTime = 0f;
 
-    private float startTimer = 0f; 
+    private float startTime = 0f; 
+    public float countDown = 0f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        startTime = Time.realtimeSinceStartup;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(startTimer >= 6) {
-            time += Time.deltaTime;
-        } else {
-            startTimer += Time.deltaTime;
-        }
+        // timer
+        timerTime += Time.deltaTime;
+        DisplayTime(timerTime);
 
-        DisplayTime(time);
+        // countdown
+        if(countDown < 8) {
+            countDown = Time.realtimeSinceStartup - startTime;
+            changeCountDown((int)countDown / 2);
+        } 
+
     }
 
     public void Pause() {
@@ -42,7 +46,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // display time in text format
+    // display timerTime in text format
     void DisplayTime(float timeToDisplay) {
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
@@ -50,8 +54,7 @@ public class UIManager : MonoBehaviour
     }
 
     // change start counter
-    public void Counter() {
-        int count = (int)startTimer / 2;
+    void changeCountDown(int count) {
         switch(count) {
             case 0:
                 counter.text = "3";
@@ -62,12 +65,16 @@ public class UIManager : MonoBehaviour
                 break;
 
             case 2:
-                counter.text = "3";
+                counter.text = "1";
                 break;
 
             case 3:
-                counter.text = "Go!";
+                counter.text = "GO!";
                 globalVariables.startGame = true;
+                break;
+            
+            default:
+                counter.text = "";
                 break;
         }
     }

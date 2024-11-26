@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 public class carControl : MonoBehaviour
 {
     public float carSpeed = 5.0f;
-    public float speedInterval = 0.1f;
+    public float speedInterval = 0.05f;
     public float maxPos = 5.3f;
     Vector3 position;
     public GameObject background;
@@ -56,7 +56,8 @@ public class carControl : MonoBehaviour
 
     private void SlowDown() {
         if(globalVariables.playerSpeed > speedInterval) {
-            globalVariables.playerSpeed -= speedInterval * Time.deltaTime;
+            float speed = globalVariables.playerSpeed - (speedInterval * Time.deltaTime);
+            globalVariables.playerSpeed = Mathf.Max(0, speed);
         } else {
             globalVariables.playerSpeed = 0;
         }

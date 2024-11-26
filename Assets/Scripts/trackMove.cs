@@ -10,13 +10,19 @@ public class trackMove : MonoBehaviour
     }
 
     void Update() {
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.P)) {
             globalVariables.startGame = !globalVariables.startGame;
         }
 
         if(globalVariables.startGame) {
             Time.timeScale = 1;
-            offset = new Vector2(0, Time.time * globalVariables.playerSpeed);
+
+            // calculate offset base on player speed
+            float offsetValue = globalVariables.playerSpeed = Mathf.Clamp(globalVariables.playerSpeed, 0, globalVariables.maxPlayerSpeed);
+            globalVariables.offsetValue = offsetValue;
+            
+            // set track to move
+            offset = new Vector2(0, Time.time * offsetValue);
             GetComponent<Renderer> ().material.mainTextureOffset = offset;
         } else {
             Time.timeScale = 0;

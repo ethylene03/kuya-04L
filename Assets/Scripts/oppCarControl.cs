@@ -2,21 +2,27 @@ using UnityEngine;
 
 public class oppCarControl : MonoBehaviour
 {
-    private float carSpeed;
+    private float baseSpeed;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        carSpeed = Random.Range(0, globalVariables.oppositeCarSpeed);
+        // randomize base speed
+        baseSpeed = Random.Range(0, globalVariables.oppositeCarSpeed);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // get random car speed for opposite cars
-        carSpeed += globalVariables.playerSpeed;
+        // get speed relative to player's speed
+        float speed = baseSpeed + (globalVariables.offsetValue * 0.2f);
 
         // set speed
-        transform.Translate (new Vector3(0, 1, 0) * carSpeed * Time.deltaTime);
+        transform.Translate (new Vector3(0, 1, 0) * speed * Time.deltaTime);
+    }
+
+    void OnCollisionEnter2D(Collision2D col) {
+        if(col.gameObject.tag == "EnemyCar" && gameObject.tag == "EnemyCar") {
+            Destroy (col.gameObject);
+            Destroy (gameObject);
+        }
     }
 }
