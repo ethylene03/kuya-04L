@@ -18,8 +18,9 @@ public class trackMove : MonoBehaviour
             Time.timeScale = 1;
 
             // calculate offset base on player speed
-            float offsetValue = globalVariables.playerSpeed = Mathf.Clamp(globalVariables.playerSpeed, 0, globalVariables.maxPlayerSpeed);
+            float offsetValue = Mathf.Clamp(globalVariables.playerSpeed, 0, globalVariables.maxPlayerSpeed);
             globalVariables.offsetValue = offsetValue;
+            Debug.Log(offsetValue);
             
             // set track to move
             offset = new Vector2(0, Time.time * offsetValue);

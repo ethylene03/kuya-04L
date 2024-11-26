@@ -13,7 +13,7 @@ public class oppCarControl : MonoBehaviour
     void Update()
     {
         // get speed relative to player's speed
-        float speed = baseSpeed + (globalVariables.offsetValue * 0.2f);
+        float speed = baseSpeed + globalVariables.offsetValue;
 
         // set speed
         transform.Translate (new Vector3(0, 1, 0) * speed * Time.deltaTime);

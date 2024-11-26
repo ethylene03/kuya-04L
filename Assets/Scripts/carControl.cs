@@ -50,7 +50,8 @@ public class carControl : MonoBehaviour
 
     private void Accelerate() {
         if(globalVariables.playerSpeed < globalVariables.maxPlayerSpeed) {
-            globalVariables.playerSpeed += speedInterval * Time.deltaTime;
+            float speed = globalVariables.playerSpeed + speedInterval * Time.deltaTime;
+            globalVariables.playerSpeed = Mathf.Max(0, speed);
         }
     }
 
