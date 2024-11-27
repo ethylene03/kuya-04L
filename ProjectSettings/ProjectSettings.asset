@@ -780,11 +780,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 0d44b62c-325a-4914-82ac-2c7f0e392da1
+  cloudProjectId: ddc87e9e-d1ca-405b-ae06-7783924a7d09
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: racing
-  organizationId: pmatillo
+  projectName: My project
+  organizationId: jtlagumbay
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
