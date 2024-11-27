@@ -4,7 +4,8 @@ using UnityEngine.UIElements;
 public class carControl : MonoBehaviour
 {
     public float carSpeed = 5.0f;
-    public float speedInterval = 0.05f;
+    private float accelerateInterval = 0.05f;
+    private float breakInterval = 0.1f;
     public float maxPos = 5.3f;
     Vector3 position;
     public GameObject background;
@@ -21,7 +22,12 @@ public class carControl : MonoBehaviour
 
     void Update()
     {
-        position.x += movementJoystick.Direction.x * carSpeed * Time.deltaTime;
+        if(movementJoystick.Direction.x == 0) {
+            position.x += Input.GetAxis("Horizontal") * carSpeed * Time.deltaTime;
+        } else{
+            position.x += movementJoystick.Direction.x * carSpeed * Time.deltaTime;
+        }
+
         position.x = Mathf.Clamp (position.x, -maxPos, maxPos);
         transform.position = position;
 
@@ -50,14 +56,14 @@ public class carControl : MonoBehaviour
 
     private void Accelerate() {
         if(globalVariables.playerSpeed < globalVariables.maxPlayerSpeed) {
-            float speed = globalVariables.playerSpeed + speedInterval * Time.deltaTime;
+            float speed = globalVariables.playerSpeed + accelerateInterval * Time.deltaTime;
             globalVariables.playerSpeed = Mathf.Max(0, speed);
         }
     }
 
     private void SlowDown() {
-        if(globalVariables.playerSpeed > speedInterval) {
-            float speed = globalVariables.playerSpeed - (speedInterval * Time.deltaTime);
+        if(globalVariables.playerSpeed > accelerateInterval) {
+            float speed = globalVariables.playerSpeed - (accelerateInterval * Time.deltaTime);
             globalVariables.playerSpeed = Mathf.Max(0, speed);
         } else {
             globalVariables.playerSpeed = 0;
@@ -65,7 +71,12 @@ public class carControl : MonoBehaviour
     }
 
     private void Brake() {
-        globalVariables.playerSpeed = 0;
+        if(globalVariables.playerSpeed > breakInterval) {
+            float speed = globalVariables.playerSpeed - (breakInterval * Time.deltaTime);
+            globalVariables.playerSpeed = Mathf.Max(0, speed);
+        } else {
+            globalVariables.playerSpeed = 0;
+        }
     }
 
     public void setAccelerate() {
