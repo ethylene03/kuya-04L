@@ -1,12 +1,21 @@
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WebSocketSharp;
 
 public class playBtn : MonoBehaviour
 {
     public string targetScene;
+    public Action TriggerOnClick;
 
     private void OnMouseDown()
     {
+        TriggerOnClick.Invoke();
         if (!string.IsNullOrEmpty(targetScene))
         {
             SceneManager.LoadScene(targetScene);
@@ -16,4 +25,5 @@ public class playBtn : MonoBehaviour
             Debug.LogWarning("Target scene name is not set.");
         }
     }
+
 }
