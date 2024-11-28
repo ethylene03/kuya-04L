@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: ab60d60b9b4ee4da4a41857d2166d937
+guid: d1540d390f8e34e42a76ab2e82842343
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6701743265818793775
-    second: jeep_0
-  - first:
-      213: -6291275810846691106
-    second: jeep_1
+      213: -1981737112524194881
+    second: lamp post_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -129,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jeep_0
+      name: lamp post_0
       rect:
         serializedVersion: 2
-        x: 508
-        y: 716
-        width: 39
-        height: 70
+        x: 52
+        y: 36
+        width: 130
+        height: 485
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,30 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f27defe2eff510d50800000000000000
-      internalID: 6701743265818793775
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jeep_1
-      rect:
-        serializedVersion: 2
-        x: 51
-        y: 54
-        width: 689
-        height: 428
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ed0b97e8bf5e0b8a0800000000000000
-      internalID: -6291275810846691106
+      spriteID: fbb79c988947f74e0800000000000000
+      internalID: -1981737112524194881
       vertices: []
       indices: 
       edges: []
@@ -176,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -185,9 +160,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      jeep_0: 6701743265818793775
-      jeep_1: -6291275810846691106
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

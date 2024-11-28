@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: ab60d60b9b4ee4da4a41857d2166d937
+guid: c9a4632dbcedc4dfdabff68895790101
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6701743265818793775
-    second: jeep_0
-  - first:
-      213: -6291275810846691106
-    second: jeep_1
+      213: -7249384406514380535
+    second: flag_3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -129,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: jeep_0
+      name: flag_3_0
       rect:
         serializedVersion: 2
-        x: 508
-        y: 716
-        width: 39
-        height: 70
+        x: 442
+        y: 402
+        width: 207
+        height: 167
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,30 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f27defe2eff510d50800000000000000
-      internalID: 6701743265818793775
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: jeep_1
-      rect:
-        serializedVersion: 2
-        x: 51
-        y: 54
-        width: 689
-        height: 428
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ed0b97e8bf5e0b8a0800000000000000
-      internalID: -6291275810846691106
+      spriteID: 90154798a43056b90800000000000000
+      internalID: -7249384406514380535
       vertices: []
       indices: 
       edges: []
@@ -186,8 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      jeep_0: 6701743265818793775
-      jeep_1: -6291275810846691106
+      flag_3_0: -7249384406514380535
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
