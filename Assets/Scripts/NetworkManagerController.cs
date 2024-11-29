@@ -10,6 +10,7 @@ using WebSocketSharp;
 using Kuya04LPlayer;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using QFSW.QC;
 
 
 public class NetworkManagerController : MonoBehaviour
@@ -52,6 +53,7 @@ public class NetworkManagerController : MonoBehaviour
 
     private void HandleStartButton()
     {
+        // NetworkManager.Singleton.StartClient();
         if (hostIp.IsNullOrEmpty()){
             Debug.Log("No active game session. Creating a game in the network.");
             CreateGame();
@@ -199,6 +201,7 @@ public class NetworkManagerController : MonoBehaviour
         ListConnectedClients(); // List clients after one disconnects
     }
 
+    [Command]
     private void ListConnectedClients()
     {
         Debug.Log("listing clients");
@@ -211,11 +214,18 @@ public class NetworkManagerController : MonoBehaviour
             Debug.Log($"Client ID: {client.ClientId}");
         }
 
+        Debug.Log(playerNames);
+
+        foreach( var player in playerNames.Value){
+            Debug.Log("player " + player);
+        }
+
     }
     
     private void AddPlayerName(ulong clientId, string playerName)
     {
         // Add player info to the list
+        Debug.Log("AddPlayerName " + clientId + playerName);
         playerNames.Value.Add(new PlayerData(clientId, playerName));
     }
 

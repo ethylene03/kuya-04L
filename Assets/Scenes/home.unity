@@ -326,7 +326,7 @@ MonoBehaviour:
   m_MaxConnectAttempts: 60
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
-    Address: 127.0.0.1
+    Address: 127.0.0.89
     Port: 7779
     ServerListenAddress: 0.0.0.0
   DebugSimulator:
@@ -349,7 +349,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 486859113}
-    PlayerPrefab: {fileID: 8034868420758841489, guid: fe23daf76aa94434e9b6f4463f197bd1, type: 3}
+    PlayerPrefab: {fileID: 0}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: e35df1c19b8fb457baf207593ce433ae, type: 2}
@@ -406,6 +406,7 @@ MonoBehaviour:
   playBtnScript: {fileID: 1648890098}
   BROADCAST_PORT: 7778
   hostIp: 
+  hostPort: 0
 --- !u!1 &533848591
 GameObject:
   m_ObjectHideFlags: 0

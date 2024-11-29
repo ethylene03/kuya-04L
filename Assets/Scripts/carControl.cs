@@ -1,7 +1,8 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class carControl : MonoBehaviour
+public class carControl : NetworkBehaviour
 {
     public float carSpeed = 5.0f;
     private float accelerateInterval = 0.05f;
