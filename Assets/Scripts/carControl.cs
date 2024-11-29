@@ -4,9 +4,14 @@ using UnityEngine.UIElements;
 public class carControl : MonoBehaviour
 {
     public float carSpeed = 5.0f;
-    private float accelerateInterval = 0.05f;
-    private float breakInterval = 0.1f;
+
+    // scale is: 1 kph = 0.00041 units (MAX 120 kph = MAX 0.05)
+    // acceleration interval would be about 1 kph
+    // break interval would be about 24 kph
+    private float accelerateInterval = 0.003f;
+    private float breakInterval = 0.01f;
     public float maxPos = 5.3f;
+    
     Vector3 position;
     public GameObject background;
     public GameObject spawn;

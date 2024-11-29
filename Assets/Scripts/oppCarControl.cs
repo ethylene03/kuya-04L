@@ -9,13 +9,15 @@ public class oppCarControl : MonoBehaviour
     void Start()
     {
         // randomize base speed
-        baseSpeed = Random.Range(0, globalVariables.oppositeCarSpeed);
+        // baseSpeed = Random.Range(0, globalVariables.oppositeCarSpeed);
+        baseSpeed = 5f;
     }
 
     void Update()
     {
         // get speed relative to player's speed
-        speed = baseSpeed + globalVariables.offsetValue;
+        speed = baseSpeed + globalVariables.playerSpeed;
+        Debug.Log("oppSpeed: " + speed);
 
         // set speed
         transform.Translate (new Vector3(0, 1, 0) * speed * Time.deltaTime);

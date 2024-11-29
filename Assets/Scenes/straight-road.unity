@@ -817,8 +817,8 @@ MonoBehaviour:
   - {fileID: 1112075871322701719, guid: f0929f48747a9402f9e6e103fb3f77c1, type: 3}
   - {fileID: 4300413693668103351, guid: 8c6503c4f1bcf45f7a083e97be1846ca, type: 3}
   - {fileID: 8967597654833853385, guid: a05692de5b8504ad8ace77e9067c40c3, type: 3}
-  maxPos: -1
-  minPos: -5.3
+  maxPos: -1.5
+  minPos: -6
   delayTimer: 2
 --- !u!4 &391189843
 Transform:
@@ -1187,7 +1187,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2ff24854b4eed4f9aaad03a3e3f73909, type: 2}
+  - {fileID: 2100000, guid: 746a09e693ade47348ef0bedd85df542, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1226,8 +1226,8 @@ Transform:
   m_GameObject: {fileID: 558511861}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.11509561}
-  m_LocalScale: {x: 17.870811, y: 10.181463, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 17.870811, y: 10.181463, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3153,12 +3153,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 403894785537757157, guid: fe23daf76aa94434e9b6f4463f197bd1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5212817
+      objectReference: {fileID: 0}
+    - target: {fileID: 403894785537757157, guid: fe23daf76aa94434e9b6f4463f197bd1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.555606
+      objectReference: {fileID: 0}
+    - target: {fileID: 403894785537757157, guid: fe23daf76aa94434e9b6f4463f197bd1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.45
+      value: 2.18
       objectReference: {fileID: 0}
     - target: {fileID: 403894785537757157, guid: fe23daf76aa94434e9b6f4463f197bd1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.26
+      value: -2.46
       objectReference: {fileID: 0}
     - target: {fileID: 403894785537757157, guid: fe23daf76aa94434e9b6f4463f197bd1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3196,6 +3204,10 @@ PrefabInstance:
       propertyPath: spawn
       value: 
       objectReference: {fileID: 391189841}
+    - target: {fileID: 7659927391550971563, guid: fe23daf76aa94434e9b6f4463f197bd1, type: 3}
+      propertyPath: maxPos
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7659927391550971563, guid: fe23daf76aa94434e9b6f4463f197bd1, type: 3}
       propertyPath: background
       value: 
