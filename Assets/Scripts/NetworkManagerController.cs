@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using WebSocketSharp;
 using Kuya04LPlayer;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 
 public class NetworkManagerController : MonoBehaviour
@@ -18,6 +19,7 @@ public class NetworkManagerController : MonoBehaviour
     // Port number to send the message. This should match with the listening device.
     public int BROADCAST_PORT = 7778;
     public string hostIp;
+    public ushort hostPort;
 
     private UdpClient udpClient;
     private UnityTransport unityTransport;
@@ -83,10 +85,24 @@ public class NetworkManagerController : MonoBehaviour
         isSearchingGame = false;
 
         // Connect to the ip of the host
-        unityTransport.ConnectionData.Address = hostIp;
+        if(!hostIp.IsNullOrEmpty()){
+            unityTransport.ConnectionData.Address = hostIp;
+            unityTransport.ConnectionData.Port = hostPort;
 
-        // Join active game
-        NetworkManager.Singleton.StartClient();
+            // Join active game
+            try {
+                 Debug.Log("Client attempting to start.");
+                 Debug.Log($"Attempting to connect to host at {unityTransport.ConnectionData.Address}:{unityTransport.ConnectionData.Port}");
+                Boolean isClientListening = NetworkManager.Singleton.StartClient();
+                 Debug.Log("Client started. " + isClientListening);
+                ListConnectedClients();
+            } catch(SystemException ex){
+                Debug.Log("Cannot start client. " + ex);
+            }
+            
+        } else {
+            Debug.Log("Cannot join game. No host ip.");
+        }
 
 
     }
@@ -109,7 +125,7 @@ public class NetworkManagerController : MonoBehaviour
     }
 
      private void OnReceive(IAsyncResult result){
-        // if (!isSearchingGame) return;
+        if (!isSearchingGame) return;
         // Get address of the sending broadcast
         IPEndPoint endPoint = new IPEndPoint( IPAddress.Broadcast, BROADCAST_PORT);
         
@@ -124,6 +140,7 @@ public class NetworkManagerController : MonoBehaviour
 
             // store ip address of host
             hostIp = endPoint.Address.ToString();
+            hostPort = (ushort) endPoint.Port;
 
             Debug.Log("Host game detected: " + hostIp);
         } else {
@@ -135,6 +152,7 @@ public class NetworkManagerController : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("OnEnable");
         // Subscribe to client connected and disconnected events
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
@@ -142,6 +160,7 @@ public class NetworkManagerController : MonoBehaviour
 
     private void OnDisable()
     {
+        Debug.Log("OnDisable");
         // Unsubscribe from events to prevent memory leaks
         NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
@@ -149,6 +168,7 @@ public class NetworkManagerController : MonoBehaviour
 
     private void OnClientConnected(ulong clientId)
     {
+        Debug.Log("Client Connected " + clientId);
         int currentConnections = NetworkManager.Singleton.ConnectedClients.Count;
 
          if (currentConnections > MAX_CLIENTS)
@@ -181,18 +201,14 @@ public class NetworkManagerController : MonoBehaviour
 
     private void ListConnectedClients()
     {
+        Debug.Log("listing clients");
         // Get the list of connected clients
         var connectedClients = NetworkManager.Singleton.ConnectedClientsList;
-
+        Debug.Log("No. of connectedClients " + connectedClients.Count);
         // Display each connected client
         foreach (var client in connectedClients)
         {
             Debug.Log($"Client ID: {client.ClientId}");
-        }
-
-        foreach (var player in playerNames.Value)
-        {
-            Debug.Log($"Client ID: {player.clientId}, Name: {player.name}");
         }
 
     }
