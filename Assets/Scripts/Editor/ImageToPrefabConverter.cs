@@ -1,13 +1,17 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ImageToPrefabConverter : MonoBehaviour
 {
+    [SerializeField] private GameObject Background;
+    [SerializeField] private GameObject spawnOppositeCar;
+
     [MenuItem("Tools/Convert Images to Prefabs")]
     private static void ConvertImagesToPrefabs()
     {
         
-        string prefabFolder = "Assets/prefab";
+        string prefabFolder = "Assets/prefab/jeeps";
         
         Object[] selectedAssets = Selection.GetFiltered(typeof(Texture2D), SelectionMode.Assets);
 
@@ -31,7 +35,11 @@ public class ImageToPrefabConverter : MonoBehaviour
             newGO.AddComponent<BoxCollider2D>(); 
             Rigidbody2D rig = newGO.AddComponent<Rigidbody2D>(); 
             rig.gravityScale = 0;
-            newGO.AddComponent<carControl>(); 
+
+            carControl controls = newGO.AddComponent<carControl>();
+            controls.carSpeed = 5;
+            controls.maxPos = 6;
+            controls.movementJoystick = Resources.Load<Joystick>("Variable Joystick"); 
 
             newGO.transform.localScale = new Vector3(0.7406f, 0.6575f, 1f);
 

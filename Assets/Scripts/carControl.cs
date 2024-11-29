@@ -13,8 +13,6 @@ public class carControl : MonoBehaviour
     public float maxPos = 5.3f;
     
     Vector3 position;
-    public GameObject background;
-    public GameObject spawn;
     public Joystick movementJoystick;
     private bool isAccelerating = false;
     private bool isBraking = false;
