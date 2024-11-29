@@ -15,15 +15,21 @@ public class playBtn : MonoBehaviour
 
     private void OnMouseDown()
     {
-        TriggerOnClick.Invoke();
-        if (!string.IsNullOrEmpty(targetScene))
-        {
-            SceneManager.LoadScene(targetScene);
+        try {
+            Debug.Log("onclick");
+            TriggerOnClick?.Invoke();
+            if (!string.IsNullOrEmpty(targetScene))
+            {
+                SceneManager.LoadScene(targetScene);
+            }
+            else
+            {
+                Debug.LogWarning("Target scene name is not set.");
+            }
+        } catch(SystemException e){
+            Debug.Log(e);
         }
-        else
-        {
-            Debug.LogWarning("Target scene name is not set.");
-        }
+
     }
 
 }

@@ -7,11 +7,15 @@ using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
+using Kuya04LPlayer;
+using System.Collections.Generic;
+
 
 public class NetworkManagerController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-  // Port number to send the message. This should match with the listening device.
+    [SerializeField] private playBtn playBtnScript;
+
+    // Port number to send the message. This should match with the listening device.
     public int BROADCAST_PORT = 7778;
     public string hostIp;
 
@@ -20,9 +24,11 @@ public class NetworkManagerController : MonoBehaviour
     private Boolean isSearchingGame = true;
     private string START_GAME_MESSAGE = "KUYA04L_GAMEHOST";
 
-    [SerializeField] private playBtn playBtnScript;
+    
+    private  int MAX_CLIENTS = 4;
 
-
+    // Store player id and player name while the objects are not spawned yet
+    public NetworkVariable<List<PlayerData>> playerNames = new NetworkVariable<List<PlayerData>>(new List<PlayerData>());
 
     private void Start(){
         // Handles broadcasting task
@@ -50,7 +56,6 @@ public class NetworkManagerController : MonoBehaviour
         } else {
             Debug.Log("There is active game session in ip: " + hostIp);
             JoinGame();
-            // Handle joining game
         }
     }
 
@@ -66,7 +71,7 @@ public class NetworkManagerController : MonoBehaviour
             // Send broadcast message every one second
             InvokeRepeating(nameof(BroadcastStartGame), 0, 1.0f);
 
-            // NetworkManager.Singleton.StartHost();
+            NetworkManager.Singleton.StartHost();
 
         } catch (SystemException e){
             Debug.Log(e);
@@ -76,6 +81,14 @@ public class NetworkManagerController : MonoBehaviour
     private void JoinGame(){
         Debug.Log("Joining game at: " + hostIp);
         isSearchingGame = false;
+
+        // Connect to the ip of the host
+        unityTransport.ConnectionData.Address = hostIp;
+
+        // Join active game
+        NetworkManager.Singleton.StartClient();
+
+
     }
 
     private void BroadcastStartGame(){
@@ -96,7 +109,7 @@ public class NetworkManagerController : MonoBehaviour
     }
 
      private void OnReceive(IAsyncResult result){
-        if (!isSearchingGame) return;
+        // if (!isSearchingGame) return;
         // Get address of the sending broadcast
         IPEndPoint endPoint = new IPEndPoint( IPAddress.Broadcast, BROADCAST_PORT);
         
@@ -111,12 +124,94 @@ public class NetworkManagerController : MonoBehaviour
 
             // store ip address of host
             hostIp = endPoint.Address.ToString();
-            // NetworkManager.Singleton.StartClient();
+
             Debug.Log("Host game detected: " + hostIp);
         } else {
             Debug.Log("Broadcast received but not from the game.");
         }
 
         udpClient.BeginReceive(OnReceive, null);
+    }
+
+    private void OnEnable()
+    {
+        // Subscribe to client connected and disconnected events
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribe from events to prevent memory leaks
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+    }
+
+    private void OnClientConnected(ulong clientId)
+    {
+        int currentConnections = NetworkManager.Singleton.ConnectedClients.Count;
+
+         if (currentConnections > MAX_CLIENTS)
+        {
+            Debug.Log("Max connections reached. Disconnecting client " + clientId);
+            NetworkManager.Singleton.DisconnectClient(clientId);
+        }
+        else
+        {
+            // You can assign a name for each player
+            string playerName = "Player" + clientId;
+
+            // Add the player data to the NetworkVariable
+            if (NetworkManager.Singleton.IsServer){
+                AddPlayerName(clientId, playerName);
+            }
+
+            Debug.Log("Client " + clientId + " connected. Name: " + playerName + "Total clients: " + currentConnections);
+            
+        }
+
+        ListConnectedClients(); // List clients when a new client connects
+    }
+
+    private void OnClientDisconnected(ulong clientId)
+    {
+        Debug.Log($"Client {clientId} disconnected.");
+        ListConnectedClients(); // List clients after one disconnects
+    }
+
+    private void ListConnectedClients()
+    {
+        // Get the list of connected clients
+        var connectedClients = NetworkManager.Singleton.ConnectedClientsList;
+
+        // Display each connected client
+        foreach (var client in connectedClients)
+        {
+            Debug.Log($"Client ID: {client.ClientId}");
+        }
+
+        foreach (var player in playerNames.Value)
+        {
+            Debug.Log($"Client ID: {player.clientId}, Name: {player.name}");
+        }
+
+    }
+    
+    private void AddPlayerName(ulong clientId, string playerName)
+    {
+        // Add player info to the list
+        playerNames.Value.Add(new PlayerData(clientId, playerName));
+    }
+
+        public struct PlayerData
+    {
+        public ulong clientId;
+        public string name;
+
+        public PlayerData(ulong id, string playerName)
+        {
+            clientId = id;
+            name = playerName;
+        }
     }
 }
