@@ -22,7 +22,7 @@ public class trackMove : MonoBehaviour
             float offsetValue = Mathf.Clamp(globalVariables.playerSpeed, 0, globalVariables.maxPlayerSpeed);
             globalVariables.offsetValue = offsetValue;
             currentOffset += offsetValue;
-            Debug.Log("speed: " + globalVariables.playerSpeed + ", offset: " + offsetValue + ", currOffset: " + currentOffset);
+            // Debug.Log("speed: " + globalVariables.playerSpeed + ", offset: " + offsetValue + ", currOffset: " + currentOffset);
             
             // set track to move
             offset = new Vector2(0, currentOffset);
