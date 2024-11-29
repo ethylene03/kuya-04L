@@ -816,7 +816,6 @@ MonoBehaviour:
   - {fileID: 6852308036121120055, guid: 8685de8b752ce45d981fce032d470ba1, type: 3}
   - {fileID: 1112075871322701719, guid: f0929f48747a9402f9e6e103fb3f77c1, type: 3}
   - {fileID: 4300413693668103351, guid: 8c6503c4f1bcf45f7a083e97be1846ca, type: 3}
-  - {fileID: 8967597654833853385, guid: a05692de5b8504ad8ace77e9067c40c3, type: 3}
   maxPos: -1.5
   minPos: -6
   delayTimer: 2
