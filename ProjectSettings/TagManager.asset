@@ -6,6 +6,7 @@ TagManager:
   tags:
   - EnemyCar
   - People
+  - Crossing
   layers:
   - Default
   - TransparentFX

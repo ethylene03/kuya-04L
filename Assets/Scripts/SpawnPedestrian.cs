@@ -25,23 +25,16 @@ public class SpawnPedestrian : MonoBehaviour
                 int idx = Random.Range(0, people.Length);
 
                 // get random side (left or right)
-                int xval = Random.Range(0, 2);
+                int xval = Random.Range(0, maxX.Length);
 
                 // get random position
                 Vector3 position = new Vector3(Random.Range(minX[xval], maxX[xval]), Random.Range(minY, maxY), transform.position.z);
                 
                 // spawn car
-                GameObject newCar = Instantiate (people[idx], position, transform.rotation);
-                oppCarControl carScript = newCar.GetComponent<oppCarControl>();
-
-                // adjust spawned car's base speed to be between prev base speed and max base speed
-                if(carScript != null) {
-                    carScript.BaseSpeed = prevSpeed;
-                    prevSpeed = carScript.BaseSpeed;
-                }
+                Instantiate (people[idx], position, transform.rotation);
                 
                 // set timer back to delay time
-                globalVariables.timer = Random.Range(0.5f, delayTimer);
+                globalVariables.timer = delayTimer;
             }
         }
     }

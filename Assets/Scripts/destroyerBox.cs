@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class destroyerBox : MonoBehaviour
 {
-    public string tag;
+    public string[] tags;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -17,8 +17,9 @@ public class destroyerBox : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D col) {
-        if(col.gameObject.tag == tag) {
-            Destroy (col.gameObject);
+        foreach(string t in tags) {
+            if(col.gameObject.tag == t)
+                Destroy(col.gameObject);
         }
     }
 }
