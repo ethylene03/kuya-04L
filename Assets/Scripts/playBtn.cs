@@ -17,10 +17,10 @@ public class playBtn : MonoBehaviour
     {
         try {
             Debug.Log("onclick");
-            TriggerOnClick?.Invoke();
             if (!string.IsNullOrEmpty(targetScene))
             {
                 SceneManager.LoadScene(targetScene);
+                TriggerOnClick?.Invoke();
             }
             else
             {

@@ -15,6 +15,7 @@ using QFSW.QC;
 
 public class NetworkManagerController : MonoBehaviour
 {
+    public static NetworkManagerController Instance { get; private set; }
     [SerializeField] private playBtn playBtnScript;
 
     // Port number to send the message. This should match with the listening device.
@@ -33,6 +34,20 @@ public class NetworkManagerController : MonoBehaviour
     // Store player id and player name while the objects are not spawned yet
     public NetworkVariable<List<PlayerData>> playerNames = new NetworkVariable<List<PlayerData>>(new List<PlayerData>());
 
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Prevent duplicate instances
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Preserve across scenes
+        }
+    }
+
     private void Start(){
         // Handles broadcasting task
         udpClient = new UdpClient(BROADCAST_PORT);
@@ -48,12 +63,51 @@ public class NetworkManagerController : MonoBehaviour
         {
             // Example: React to playBtn's click through shared logic
             playBtnScript.TriggerOnClick = HandleStartButton;
+            // // playBtnScript.TriggerOnClick = JoinGame;
+            // // playBtnScript.TriggerOnClick = () =>  NetworkManager.Singleton.StartClient();
+            // playBtnScript.TriggerOnClick = () =>  {
+            //     try {
+            //         Debug.Log("Starting client");
+            //         NetworkManager.Singleton.StartClient();
+            //         Debug.Log("Done starting client. ");
+            //         getAddress();
+
+            //     } catch(SystemException ex){
+            //         Debug.Log("Can't start. " + ex);
+            //     }
+                
+            // };
+
+            // // playBtnScript.TriggerOnClick = () =>  {
+            // //     try {
+            // //         Debug.Log("Starting Host");
+            // //         NetworkManager.Singleton.StartHost();
+            // //         Debug.Log("Done starting Host. ");
+            // //         getAddress();
+
+            // //     } catch(SystemException ex){
+            // //         Debug.Log("Can't start Host. " + ex);
+            // //     }
+                
+            // // };
         }
+    }
+
+    [Command]
+    private void setAddress(string ipAddress, ushort port){
+        unityTransport.ConnectionData.Address = ipAddress;
+        unityTransport.ConnectionData.Port = port;
+        Debug.Log("Done changing address.");
+        getAddress();
+    }
+
+    [Command]
+    private void getAddress(){
+        Debug.Log("Connected to: " + unityTransport.ConnectionData.Address + ":" + unityTransport.ConnectionData.Port);
     }
 
     private void HandleStartButton()
     {
-        // NetworkManager.Singleton.StartClient();
         if (hostIp.IsNullOrEmpty()){
             Debug.Log("No active game session. Creating a game in the network.");
             CreateGame();
@@ -71,6 +125,10 @@ public class NetworkManagerController : MonoBehaviour
 
             // Enable Broadcasting
             udpClient.EnableBroadcast = true;
+
+            Debug.Log("Creating game.");
+
+            getAddress();
             
             // Send broadcast message every one second
             InvokeRepeating(nameof(BroadcastStartGame), 0, 1.0f);
@@ -90,6 +148,9 @@ public class NetworkManagerController : MonoBehaviour
         if(!hostIp.IsNullOrEmpty()){
             unityTransport.ConnectionData.Address = hostIp;
             unityTransport.ConnectionData.Port = hostPort;
+
+
+            getAddress();
 
             // Join active game
             try {
@@ -136,7 +197,7 @@ public class NetworkManagerController : MonoBehaviour
         
         string message = Encoding.UTF8.GetString(data);
         
-        Debug.Log($"Received broadcast from {endPoint.Address}: {message}");
+        Debug.Log($"Received broadcast from {endPoint.Address}:{endPoint.Port}: {message}");
 
         if (message == START_GAME_MESSAGE){
 
@@ -152,21 +213,25 @@ public class NetworkManagerController : MonoBehaviour
         udpClient.BeginReceive(OnReceive, null);
     }
 
-    private void OnEnable()
-    {
-        Debug.Log("OnEnable");
-        // Subscribe to client connected and disconnected events
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
-    }
+    // private void OnEnable()
+    // {
+    //     Debug.Log("OnEnable");
+    //     if (NetworkManager.Singleton != null){
+    //         // Subscribe to client connected and disconnected events
+    //         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+    //         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+    //     }
+    // }
 
-    private void OnDisable()
-    {
-        Debug.Log("OnDisable");
-        // Unsubscribe from events to prevent memory leaks
-        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
-        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
-    }
+    // private void OnDisable()
+    // {
+    //     if (NetworkManager.Singleton != null){
+    //         // Unsubscribe from events to prevent memory leaks
+    //         NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+    //         NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+    //     } 
+
+    // }
 
     private void OnClientConnected(ulong clientId)
     {
@@ -184,7 +249,7 @@ public class NetworkManagerController : MonoBehaviour
             string playerName = "Player" + clientId;
 
             // Add the player data to the NetworkVariable
-            if (NetworkManager.Singleton.IsServer){
+            if (NetworkManager.Singleton.IsHost){
                 AddPlayerName(clientId, playerName);
             }
 
@@ -193,6 +258,12 @@ public class NetworkManagerController : MonoBehaviour
         }
 
         ListConnectedClients(); // List clients when a new client connects
+    }
+
+
+    [Command]
+    private void checkIsClient(){
+        Debug.Log("Is client " + NetworkManager.Singleton.IsClient);
     }
 
     private void OnClientDisconnected(ulong clientId)
