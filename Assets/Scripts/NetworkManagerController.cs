@@ -147,14 +147,12 @@ public class NetworkManagerController : MonoBehaviour
         // Connect to the ip of the host
         if(!hostIp.IsNullOrEmpty()){
             unityTransport.ConnectionData.Address = hostIp;
-            unityTransport.ConnectionData.Port = hostPort;
 
 
             getAddress();
 
             // Join active game
             try {
-                 Debug.Log("Client attempting to start.");
                  Debug.Log($"Attempting to connect to host at {unityTransport.ConnectionData.Address}:{unityTransport.ConnectionData.Port}");
                 Boolean isClientListening = NetworkManager.Singleton.StartClient();
                  Debug.Log("Client started. " + isClientListening);
@@ -203,7 +201,6 @@ public class NetworkManagerController : MonoBehaviour
 
             // store ip address of host
             hostIp = endPoint.Address.ToString();
-            hostPort = (ushort) endPoint.Port;
 
             Debug.Log("Host game detected: " + hostIp);
         } else {
@@ -213,25 +210,25 @@ public class NetworkManagerController : MonoBehaviour
         udpClient.BeginReceive(OnReceive, null);
     }
 
-    // private void OnEnable()
-    // {
-    //     Debug.Log("OnEnable");
-    //     if (NetworkManager.Singleton != null){
-    //         // Subscribe to client connected and disconnected events
-    //         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-    //         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
-    //     }
-    // }
+    private void OnEnable()
+    {
+        Debug.Log("OnEnable");
+        if (NetworkManager.Singleton != null){
+            // Subscribe to client connected and disconnected events
+            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+        }
+    }
 
-    // private void OnDisable()
-    // {
-    //     if (NetworkManager.Singleton != null){
-    //         // Unsubscribe from events to prevent memory leaks
-    //         NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
-    //         NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
-    //     } 
+    private void OnDisable()
+    {
+        if (NetworkManager.Singleton != null){
+            // Unsubscribe from events to prevent memory leaks
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        } 
 
-    // }
+    }
 
     private void OnClientConnected(ulong clientId)
     {
@@ -242,19 +239,6 @@ public class NetworkManagerController : MonoBehaviour
         {
             Debug.Log("Max connections reached. Disconnecting client " + clientId);
             NetworkManager.Singleton.DisconnectClient(clientId);
-        }
-        else
-        {
-            // You can assign a name for each player
-            string playerName = "Player" + clientId;
-
-            // Add the player data to the NetworkVariable
-            if (NetworkManager.Singleton.IsHost){
-                AddPlayerName(clientId, playerName);
-            }
-
-            Debug.Log("Client " + clientId + " connected. Name: " + playerName + "Total clients: " + currentConnections);
-            
         }
 
         ListConnectedClients(); // List clients when a new client connects
@@ -285,30 +269,5 @@ public class NetworkManagerController : MonoBehaviour
             Debug.Log($"Client ID: {client.ClientId}");
         }
 
-        Debug.Log(playerNames);
-
-        foreach( var player in playerNames.Value){
-            Debug.Log("player " + player);
-        }
-
-    }
-    
-    private void AddPlayerName(ulong clientId, string playerName)
-    {
-        // Add player info to the list
-        Debug.Log("AddPlayerName " + clientId + playerName);
-        playerNames.Value.Add(new PlayerData(clientId, playerName));
-    }
-
-        public struct PlayerData
-    {
-        public ulong clientId;
-        public string name;
-
-        public PlayerData(ulong id, string playerName)
-        {
-            clientId = id;
-            name = playerName;
-        }
     }
 }

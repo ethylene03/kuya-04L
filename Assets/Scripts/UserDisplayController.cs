@@ -83,7 +83,7 @@ public class UserDisplayController : MonoBehaviour
         Debug.Log("players count: " + playerNames.Value.Count);
         // Access playerNames and create prefabs
 
-            // Validate playerPrefab
+        // Validate playerPrefab
         if (playerPrefab == null) {
             Debug.LogError("playerPrefab is not assigned. Please assign a valid prefab.");
             return;
