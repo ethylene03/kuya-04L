@@ -40,7 +40,7 @@ public class carSpawner : MonoBehaviour
                 }
                 
                 // set timer back to delay time
-                globalVariables.timer = Random.Range(0.5f, delayTimer);
+                globalVariables.timer = delayTimer;
             }
         }
     }

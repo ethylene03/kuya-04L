@@ -8,19 +8,21 @@ public class SpawnPedestrian : MonoBehaviour
     public float[] minX = new float[] { 8.05f, -8.45f };
     public float maxY = 4.5f;
     public float minY = -4.5f;
-    public float delayTimer = 2f;
+    public float minDelay = 0f;
+    public float maxDelay = 2f;
 
     private float prevSpeed = 0;
+    private float timer;
 
     void Start() {
-        globalVariables.timer = delayTimer;
+        timer = minDelay;
     }
 
     void Update() {
         if(globalVariables.startGame) {
-            globalVariables.timer -= Time.deltaTime;
+            timer -= Time.deltaTime;
 
-            if(globalVariables.timer <= 0) {
+            if(timer <= 0) {
                 // get random car
                 int idx = Random.Range(0, people.Length);
 
@@ -34,7 +36,7 @@ public class SpawnPedestrian : MonoBehaviour
                 Instantiate (people[idx], position, transform.rotation);
                 
                 // set timer back to delay time
-                globalVariables.timer = delayTimer;
+                timer = Random.Range(minDelay, maxDelay + 1);
             }
         }
     }

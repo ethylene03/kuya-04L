@@ -64,6 +64,7 @@ public class UIManager : MonoBehaviour
             
             default:
                 counter.text = "";
+                globalVariables.startGame = true;
                 break;
         }
     }
