@@ -4,10 +4,9 @@ using System.Collections;
 public class trackMove : MonoBehaviour
 {
     Vector2 offset;
-    private float currentOffset;
 
     void Start() {
-        currentOffset = 0;
+        globalVariables.currentOffset = 0;
     }
 
     void Update() {
@@ -21,11 +20,11 @@ public class trackMove : MonoBehaviour
             // calculate offset base on player speed
             float offsetValue = Mathf.Clamp(globalVariables.playerSpeed, 0, globalVariables.maxPlayerSpeed);
             globalVariables.offsetValue = offsetValue;
-            currentOffset += offsetValue;
+            globalVariables.currentOffset += offsetValue;
             // Debug.Log("speed: " + globalVariables.playerSpeed + ", offset: " + offsetValue + ", currOffset: " + currentOffset);
             
             // set track to move
-            offset = new Vector2(0, currentOffset);
+            offset = new Vector2(0, globalVariables.currentOffset);
             GetComponent<Renderer> ().material.mainTextureOffset = offset;
         } else {
             Time.timeScale = 0;

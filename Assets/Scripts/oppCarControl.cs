@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class oppCarControl : MonoBehaviour
 {
-    private float baseSpeed;
+    public float baseSpeed;
     private float speed;
 
     void Start()
     {
         // randomize base speed
         // baseSpeed = Random.Range(0, globalVariables.oppositeCarSpeed);
-        baseSpeed = 5f;
+        // baseSpeed = 5f;
     }
 
     void Update()

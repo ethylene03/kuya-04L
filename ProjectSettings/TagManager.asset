@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - EnemyCar
+  - People
   layers:
   - Default
   - TransparentFX

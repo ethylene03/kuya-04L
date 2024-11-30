@@ -6,4 +6,5 @@ public static class globalVariables {
     public static float playerSpeed = 0f;
     public static float maxPlayerSpeed = 0.005f;
     public static float offsetValue = 0f;
+    public static float currentOffset = 0f;
 }
