@@ -11,6 +11,9 @@ public class UIManager : MonoBehaviour
 
     private float startTime = 0f; 
     public float countDown = 0f;
+    private float transformInterval = 1f;
+    private float YScale = 91.2492f;
+    private float MinScale = 85f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,9 +29,9 @@ public class UIManager : MonoBehaviour
         DisplayTime(timerTime);
 
         // countdown
-        if(countDown < 8) {
+        if(countDown < 4) {
             countDown = Time.realtimeSinceStartup - startTime;
-            changeCountDown((int)countDown / 2);
+            changeCountDown((int)countDown);
         } 
 
     }
