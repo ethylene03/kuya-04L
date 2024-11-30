@@ -104,8 +104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carSpeed: 5
   maxPos: 5.3
-  background: {fileID: 0}
-  spawn: {fileID: 0}
   movementJoystick: {fileID: 0}
 --- !u!50 &916353855857543041
 Rigidbody2D:

@@ -1,19 +1,14 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public TMP_Text pauseBTN; 
     public TMP_Text textTimer;
     public TMP_Text counter;
     private float timerTime = 0f;
 
     private float startTime = 0f; 
     public float countDown = 0f;
-    private float transformInterval = 1f;
-    private float YScale = 91.2492f;
-    private float MinScale = 85f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
