@@ -1,19 +1,13 @@
 fileFormatVersion: 2
-guid: 61e73ea90d8604785888308eebfbb04b
+guid: c40906be38708495482b6a4e9b4dfea6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3909567947608573584
-    second: taxi_0
+      213: 467278495501249325
+    second: people-3_0
   - first:
-      213: 3439567306683597794
-    second: taxi_1
-  - first:
-      213: -6106234519006858208
-    second: taxi_2
-  - first:
-      213: 3578521813621186737
-    second: taxi_3
+      213: -7694466654091728010
+    second: people-3_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,7 +100,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
+    buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -119,7 +113,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: Android
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -135,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: taxi_0
+      name: people-3_0
       rect:
         serializedVersion: 2
-        x: 56
-        y: 220
-        width: 6
-        height: 11
+        x: 606
+        y: 736
+        width: 182
+        height: 221
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,20 +144,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0964676a553914630800000000000000
-      internalID: 3909567947608573584
+      spriteID: d2be78fd05b1c7600800000000000000
+      internalID: 467278495501249325
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: taxi_1
+      name: people-3_1
       rect:
         serializedVersion: 2
-        x: 66
-        y: 18
-        width: 118
-        height: 236
+        x: 766
+        y: 746
+        width: 169
+        height: 197
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,52 +166,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e34ce7ed3ccbbf20800000000000000
-      internalID: 3439567306683597794
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: taxi_2
-      rect:
-        serializedVersion: 2
-        x: 162
-        y: 220
-        width: 22
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0243e53ae0c424ba0800000000000000
-      internalID: -6106234519006858208
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: taxi_3
-      rect:
-        serializedVersion: 2
-        x: 57
-        y: 199
-        width: 6
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1b0a0e131a679a130800000000000000
-      internalID: 3578521813621186737
+      spriteID: 67b26ca5853c73590800000000000000
+      internalID: -7694466654091728010
       vertices: []
       indices: 
       edges: []
@@ -235,11 +185,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      taxi_0: 3909567947608573584
-      taxi_1: 3439567306683597794
-      taxi_2: -6106234519006858208
-      taxi_3: 3578521813621186737
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

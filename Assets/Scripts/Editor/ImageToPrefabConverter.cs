@@ -11,7 +11,7 @@ public class ImageToPrefabConverter : MonoBehaviour
     private static void ConvertImagesToPrefabs()
     {
         
-        string prefabFolder = "Assets/prefab/jeeps";
+        string prefabFolder = "Assets/prefab/cars";
         
         Object[] selectedAssets = Selection.GetFiltered(typeof(Texture2D), SelectionMode.Assets);
 
@@ -32,16 +32,17 @@ public class ImageToPrefabConverter : MonoBehaviour
             SpriteRenderer spriteRenderer = newGO.AddComponent<SpriteRenderer>();
             spriteRenderer.sprite = sprite;
 
-            newGO.AddComponent<BoxCollider2D>(); 
+            BoxCollider2D box = newGO.AddComponent<BoxCollider2D>();
+            box.offset = new Vector2(-0.2203777f, -1.192093e-07f);
+            box.size = new Vector2(2.849597f, 3.98f);
+
             Rigidbody2D rig = newGO.AddComponent<Rigidbody2D>(); 
             rig.gravityScale = 0;
 
-            carControl controls = newGO.AddComponent<carControl>();
-            controls.carSpeed = 5;
-            controls.maxPos = 6;
-            controls.movementJoystick = Resources.Load<Joystick>("Variable Joystick"); 
+            newGO.AddComponent<oppCarControl>();
 
-            newGO.transform.localScale = new Vector3(0.7406f, 0.6575f, 1f);
+            newGO.transform.localScale = new Vector3(0.7302f, 0.8383f, 1f);
+            newGO.transform.Rotate(180f, 0f, 0f);
 
             string prefabPath = $"{prefabFolder}/{sprite.name}.prefab";
             PrefabUtility.SaveAsPrefabAsset(newGO, prefabPath);
