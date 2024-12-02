@@ -940,6 +940,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quantum Console (SRP)
       objectReference: {fileID: 0}
+    - target: {fileID: 4735113768296962263, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
+      propertyPath: _singletonMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4735202183287030787, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_Size
       value: 0.9694398

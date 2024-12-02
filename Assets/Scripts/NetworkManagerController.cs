@@ -19,9 +19,8 @@ public class NetworkManagerController : MonoBehaviour
     [SerializeField] private playBtn playBtnScript;
 
     // Port number to send the message. This should match with the listening device.
-    public int BROADCAST_PORT = 7778;
+    private int BROADCAST_PORT = 7778;
     public string hostIp;
-    public ushort hostPort;
 
     private UdpClient udpClient;
     private UnityTransport unityTransport;
@@ -119,7 +118,7 @@ public class NetworkManagerController : MonoBehaviour
                 return networkInterface.ToString();
             }
         }
-        return null; 
+        throw new SystemException("No local ip address found."); 
     }
 
     private void HandleStartButton()
@@ -135,17 +134,17 @@ public class NetworkManagerController : MonoBehaviour
 
     // Broadcasts to LAN that they will start a game.
     private void CreateGame(){
-        try {
-            // Do not listen to other broadcast that is searching a game. One active game at a time.
-            isSearchingGame = false;
+        // Do not listen to other broadcast that is searching a game. One active game at a time.
+        isSearchingGame = false;
 
-            // Enable Broadcasting
-            udpClient.EnableBroadcast = true;
+        // Enable Broadcasting
+        udpClient.EnableBroadcast = true;
 
-            Debug.Log("Creating game.");
+        Debug.Log("Creating game.");
 
-            getAddress();
-            
+        getAddress();
+
+        // try {
             string localIPAddress = GetLocalIPAddress();
 
             if (!localIPAddress.IsNullOrEmpty()){
@@ -156,11 +155,15 @@ public class NetworkManagerController : MonoBehaviour
 
                 NetworkManager.Singleton.StartHost();
             } 
+        // } catch (SystemException ex){
+        //     Debug.Log("CreateGame error: " + ex);
+        // }
+            
+    }
 
-
-        } catch (SystemException e){
-            Debug.Log(e);
-        }
+    [Command]
+    private void CloseGameInvite(){
+        CancelInvoke(nameof(BroadcastStartGame));
     }
 
     private void JoinGame(){

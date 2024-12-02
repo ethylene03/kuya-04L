@@ -1,15 +1,19 @@
 using TMPro;
 using UnityEngine;
 using Unity.Netcode;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using QFSW.QC;
 using System;
+using System.Net;
+using System.Collections.Concurrent;
+
 
 
 public class UserDisplayController : MonoBehaviour
 {
-    
+    private BroadcastManager broadcastManager;
+    private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 // Prefab for displaying a player
     [SerializeField] private GameObject playerPrefab;
@@ -17,17 +21,48 @@ public class UserDisplayController : MonoBehaviour
     // Parent where player prefabs will be instantiated
     [SerializeField] private  Transform playerListParent;
 
+    // Port for notifying new connected client
+    private int BROADCAST_PORT = 7780;
+    private string BROADCAST_MESSAGE = "KUYA04L_new_player";
+    
+
+
     private void Start()
     {
+        broadcastManager = new BroadcastManager(BROADCAST_PORT); // Use a different port if needed
+        broadcastManager.IsListening = !NetworkManager.Singleton.IsHost;
+        broadcastManager.HandleOnReceive = DisplayPlayers;
 
         if(NetworkManager.Singleton != null){
             NetworkManager.Singleton.SceneManager.OnLoadComplete += OnSceneLoadComplete;
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         }
 
-        DisplayPlayers();
+        UpdatePlayerBoard();
         
     }
+
+
+    private void OnDestroy()
+    {
+        broadcastManager.IsListening = false;
+        // Unsubscribe to avoid memory leaks
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnSceneLoadComplete;
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+        }
+    }
+
+    private void Update(){
+        while (messageQueue.TryDequeue(out string message))
+        {
+            // Process the dequeued message
+            UpdatePlayerBoard();
+        }
+    }
+
+
     private void OnClientConnected(ulong clientId)
     {
         Debug.Log($"Client connected with ID: {clientId}");
@@ -44,29 +79,30 @@ public class UserDisplayController : MonoBehaviour
         BroadcastDisplayPlayers();
     }
 
-    private void OnDestroy()
-    {
-        // Unsubscribe to avoid memory leaks
-        if (NetworkManager.Singleton != null)
-        {
-            NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnSceneLoadComplete;
-            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+
+    [Command]
+    private void BroadcastDisplayPlayers(){
+        // Only host will broadcast
+        if (NetworkManager.Singleton.IsHost){
+            broadcastManager.SendBroadcast(BROADCAST_MESSAGE);
+            UpdatePlayerBoard();
         }
     }
 
-    [ServerRpc]
-    private void BroadcastDisplayPlayers(){
-        Debug.Log("Broadcast to display players");
-        DisplayPlayers();
-    }
+    [Command]
+    private void DisplayPlayers(string receivedMessage = "KUYA04L_new_player", IPEndPoint ipAddress = null){
+        Debug.Log("Display players broadcast received. " + receivedMessage + " from: " + ipAddress?.Address);
 
+        if (receivedMessage != BROADCAST_MESSAGE){
+            return;
+        }
+        messageQueue.Enqueue(receivedMessage);
+    }
     
     [Command]
-    [ClientRpc]
-
-    private void DisplayPlayers()
+    private void UpdatePlayerBoard()
     {
-        Debug.Log("Display players");
+
 
         if (NetworkManagerController.Instance == null)
         {

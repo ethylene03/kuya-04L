@@ -16,11 +16,18 @@ public class playBtn : MonoBehaviour
     private void OnMouseDown()
     {
         try {
-            Debug.Log("onclick");
+            TriggerOnClick?.Invoke();
+            
+        } catch(SystemException e){
+            // TODO: Add text that no ip address. Make sure to connect to a Wifi Hotspot.
+            Debug.Log("OnMouseDown " + e);
+            return;
+        }
+        try {
             if (!string.IsNullOrEmpty(targetScene))
-            {
+            {     
                 SceneManager.LoadScene(targetScene);
-                TriggerOnClick?.Invoke();
+                
             }
             else
             {
