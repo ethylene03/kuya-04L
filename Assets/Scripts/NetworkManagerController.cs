@@ -1,15 +1,14 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
 using System.Text;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
-using UnityEngine.UI;
 using WebSocketSharp;
 using Kuya04LPlayer;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using QFSW.QC;
 
 
@@ -106,6 +105,54 @@ public class NetworkManagerController : MonoBehaviour
         Debug.Log("Connected to: " + unityTransport.ConnectionData.Address + ":" + unityTransport.ConnectionData.Port);
     }
 
+    [Command]
+    private string GetLocalIPAddress()
+    {
+        foreach (var networkInterface in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+        {
+            if (networkInterface.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+            {
+                return networkInterface.ToString();
+            }
+        }
+        return null; // No suitable IP address found
+    }
+
+    [Command]
+    private string GetHotspotIPAddress(){
+        foreach (var networkInterface in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            if (networkInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && 
+                networkInterface.OperationalStatus == OperationalStatus.Up)
+            {
+                foreach (var ip in networkInterface.GetIPProperties().UnicastAddresses)
+                {
+                    if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        return ip.Address.ToString();
+                    }
+                }
+            }
+        }
+
+        return null; // Hotspot IP address not found
+    }
+
+    [Command]
+    private void FindGatewayIPAddress(){
+        foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
+        {
+            if (networkInterface.OperationalStatus == OperationalStatus.Up)
+            {
+                var properties = networkInterface.GetIPProperties();
+                foreach (var gateway in properties.GatewayAddresses)
+                {
+                    Debug.Log($"Gateway IP: {gateway.Address}");
+                }
+            }
+        }
+    }
+
     private void HandleStartButton()
     {
         if (hostIp.IsNullOrEmpty()){
@@ -130,10 +177,17 @@ public class NetworkManagerController : MonoBehaviour
 
             getAddress();
             
-            // Send broadcast message every one second
-            InvokeRepeating(nameof(BroadcastStartGame), 0, 1.0f);
+            string localIPAddress = GetLocalIPAddress();
 
-            NetworkManager.Singleton.StartHost();
+            if (!localIPAddress.IsNullOrEmpty()){
+                unityTransport.ConnectionData.Address = localIPAddress;
+
+                // Send broadcast message every one second
+                InvokeRepeating(nameof(BroadcastStartGame), 0, 1.0f);
+
+                NetworkManager.Singleton.StartHost();
+            } 
+
 
         } catch (SystemException e){
             Debug.Log(e);

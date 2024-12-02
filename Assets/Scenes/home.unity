@@ -407,6 +407,8 @@ MonoBehaviour:
   BROADCAST_PORT: 7778
   hostIp: 
   hostPort: 0
+  playerNames:
+    m_InternalValue: []
 --- !u!1 &533848591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1067,6 +1069,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4844316182991342303, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844316182991342303, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4844785881582304729, guid: 2da3dcc22749e7f4280737786d898334, type: 3}
