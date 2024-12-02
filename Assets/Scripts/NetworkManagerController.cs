@@ -236,12 +236,13 @@ public class NetworkManagerController : MonoBehaviour
     [Command]
     private string GetBroadcastAddress()
     {
+        string subnetMask = "255.255.255.0";
         try
         {
             // Get local IP address
             string localIP = GetLocalIPAddress();
             // Use a default subnet mask for typical hotspots (255.255.255.0)
-            string subnetMask = "255.255.255.0";
+           
 
             // Calculate broadcast address
             string[] ipParts = localIP.Split('.');
@@ -257,7 +258,7 @@ public class NetworkManagerController : MonoBehaviour
         }
         catch
         {
-            return null; // Return null if an error occurs
+            return subnetMask; // Return null if an error occurs
         }
     }
 
@@ -268,6 +269,7 @@ public class NetworkManagerController : MonoBehaviour
             // Subscribe to client connected and disconnected events
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+            NetworkManager.Singleton.ConnectionApprovalCallback += OnConnectionApproval;
         }
     }
 
@@ -277,6 +279,7 @@ public class NetworkManagerController : MonoBehaviour
             // Unsubscribe from events to prevent memory leaks
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+            NetworkManager.Singleton.ConnectionApprovalCallback -= OnConnectionApproval;
         } 
 
     }
@@ -286,13 +289,34 @@ public class NetworkManagerController : MonoBehaviour
         Debug.Log("Client Connected " + clientId);
         int currentConnections = NetworkManager.Singleton.ConnectedClients.Count;
 
-         if (currentConnections > MAX_CLIENTS)
-        {
-            Debug.Log("Max connections reached. Disconnecting client " + clientId);
-            NetworkManager.Singleton.DisconnectClient(clientId);
-        }
-
         ListConnectedClients(); // List clients when a new client connects
+    }
+
+
+    private void OnConnectionApproval(NetworkManager.ConnectionApprovalRequest request, NetworkManager.ConnectionApprovalResponse response)
+    {
+        Debug.Log("Connection request received.");
+
+        // Check the current number of connected clients
+        int connectedClients = NetworkManager.Singleton.ConnectedClients.Count;
+
+        if (connectedClients < MAX_CLIENTS)
+        {
+            // Approve connection but don't create player object automatically
+            response.Approved = true;
+            response.CreatePlayerObject = false; // Prevent automatic player object creation
+            response.Pending = false;
+
+            Debug.Log($"Connection approved. Current connected clients: {connectedClients + 1}/{MAX_CLIENTS}");
+        }
+        else
+        {
+            // Reject connection if the limit is exceeded
+            response.Approved = false;
+            response.Pending = false;
+
+            Debug.LogWarning("Connection rejected. Server is full.");
+        }
     }
 
 
