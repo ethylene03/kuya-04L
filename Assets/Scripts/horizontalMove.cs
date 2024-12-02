@@ -11,6 +11,9 @@ public class horizontalMove : MonoBehaviour
     }
 
     void Update() {
+        if(Time.timeScale != 1)
+            Time.timeScale = 1;
+
         offset = new Vector2(Time.time * speed, 0);
         GetComponent<Renderer> ().material.mainTextureOffset = offset;
     }

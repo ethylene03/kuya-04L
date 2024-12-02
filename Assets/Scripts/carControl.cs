@@ -5,12 +5,15 @@ using UnityEngine.UIElements;
 public class carControl : NetworkBehaviour
 {
     public float carSpeed = 5.0f;
-    private float accelerateInterval = 0.05f;
-    private float breakInterval = 0.1f;
+
+    // scale is: 1 kph = 0.00041 units (MAX 120 kph = MAX 0.05)
+    // acceleration interval would be about 1 kph
+    // break interval would be about 24 kph
+    private float accelerateInterval = 0.0005f;
+    private float breakInterval = 0.01f;
     public float maxPos = 5.3f;
+    
     Vector3 position;
-    public GameObject background;
-    public GameObject spawn;
     public Joystick movementJoystick;
     private bool isAccelerating = false;
     private bool isBraking = false;
@@ -80,21 +83,40 @@ public class carControl : NetworkBehaviour
         }
     }
 
-    public void setAccelerate() {
+    public void setAccelerate(GameObject obj) {
+        // Debug.Log("pressed down");
         isAccelerating = true;
         isBraking = false;
         isSlowingDown = false;
+
+        //transform object to simulate animation
+        obj.transform.localScale = new Vector3(89.262f, 74.82434f, 1f);
+        obj.transform.localPosition = new Vector3(-456.84f, -377.23f, -1f);
     }
 
-    public void setSlowDown() {
+    public void setSlowDown(GameObject obj) {
         isSlowingDown = true;
         isAccelerating = false;
         isBraking = false;
+
+        //transform object to simulate animation
+        obj.transform.localScale = new Vector3(89.262f, 91.2492f, 1f);
+        obj.transform.localPosition = new Vector3(-456.84f, -349.92f, -1f);
     }
 
-    public void setBrake() {
+    public void setBrakePressed(GameObject obj) {
         isBraking = true;
         isAccelerating = false;
         isSlowingDown = false;
+
+        //transform object to simulate animation
+        obj.transform.localScale = new Vector3(91.6488f, 58.62067f, 1f);
+        obj.transform.localPosition = new Vector3(-747.6732f, -424.3f, -1f);
+    }
+
+    public void setBrakeUnpressed(GameObject obj) {
+        //transform object to simulate animation
+        obj.transform.localScale = new Vector3(91.6488f, 88.8192f, 1f);
+        obj.transform.localPosition = new Vector3(-747.6732f, -389.5452f, -1f);
     }
 }

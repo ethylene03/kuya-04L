@@ -3,19 +3,21 @@ using UnityEngine;
 
 public class oppCarControl : MonoBehaviour
 {
-    private float baseSpeed;
+    public float baseSpeed;
     private float speed;
 
     void Start()
     {
         // randomize base speed
-        baseSpeed = Random.Range(0, globalVariables.oppositeCarSpeed);
+        // baseSpeed = Random.Range(0, globalVariables.oppositeCarSpeed);
+        // baseSpeed = 5f;
     }
 
     void Update()
     {
         // get speed relative to player's speed
-        speed = baseSpeed + globalVariables.offsetValue;
+        speed = baseSpeed + (globalVariables.playerSpeed * 500);
+        // Debug.Log("oppSpeed: " + speed + ", ur speed: " + globalVariables.playerSpeed);
 
         // set speed
         transform.Translate (new Vector3(0, 1, 0) * speed * Time.deltaTime);

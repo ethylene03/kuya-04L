@@ -6,7 +6,7 @@ public class carSpawner : MonoBehaviour
     public GameObject[] cars;
     public float maxPos = -1.0f;
     public float minPos = -5.3f;
-    public float delayTimer = 5f;
+    public float delayTimer = 2f;
 
     private float prevSpeed = 0;
 
@@ -20,11 +20,7 @@ public class carSpawner : MonoBehaviour
     void Update()
     {
         if(globalVariables.startGame) {
-            if(globalVariables.playerSpeed > 0) {
-                globalVariables.timer -= Time.deltaTime * globalVariables.playerSpeed * 2; // change interval according to speed of player
-            } else {
-                globalVariables.timer -= Time.deltaTime;
-            }
+            globalVariables.timer -= Time.deltaTime;
 
             if(globalVariables.timer <= 0) {
                 // get random car

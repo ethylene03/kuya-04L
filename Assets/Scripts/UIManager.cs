@@ -1,10 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public TMP_Text pauseBTN; 
     public TMP_Text textTimer;
     public TMP_Text counter;
     private float timerTime = 0f;
@@ -26,9 +24,9 @@ public class UIManager : MonoBehaviour
         DisplayTime(timerTime);
 
         // countdown
-        if(countDown < 8) {
+        if(countDown < 4) {
             countDown = Time.realtimeSinceStartup - startTime;
-            changeCountDown((int)countDown / 2);
+            changeCountDown((int)countDown);
         } 
 
     }
@@ -66,6 +64,7 @@ public class UIManager : MonoBehaviour
             
             default:
                 counter.text = "";
+                globalVariables.startGame = true;
                 break;
         }
     }
