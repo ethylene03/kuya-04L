@@ -10,6 +10,7 @@ using WebSocketSharp;
 using Kuya04LPlayer;
 using System.Collections.Generic;
 using QFSW.QC;
+using Unity.VisualScripting;
 
 
 public class NetworkManagerController : MonoBehaviour
@@ -28,7 +29,7 @@ public class NetworkManagerController : MonoBehaviour
     private string START_GAME_MESSAGE = "KUYA04L_GAMEHOST";
 
     
-    private  int MAX_CLIENTS = 4;
+    private  int MAX_CLIENTS = 2;
 
     // Store player id and player name while the objects are not spawned yet
     public NetworkVariable<List<PlayerData>> playerNames = new NetworkVariable<List<PlayerData>>(new List<PlayerData>());
@@ -110,47 +111,15 @@ public class NetworkManagerController : MonoBehaviour
     {
         foreach (var networkInterface in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
         {
-            if (networkInterface.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+            if (
+                networkInterface.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && 
+                networkInterface.ToString().StartsWith("192")
+            )
             {
                 return networkInterface.ToString();
             }
         }
-        return null; // No suitable IP address found
-    }
-
-    [Command]
-    private string GetHotspotIPAddress(){
-        foreach (var networkInterface in NetworkInterface.GetAllNetworkInterfaces())
-        {
-            if (networkInterface.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && 
-                networkInterface.OperationalStatus == OperationalStatus.Up)
-            {
-                foreach (var ip in networkInterface.GetIPProperties().UnicastAddresses)
-                {
-                    if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
-                    {
-                        return ip.Address.ToString();
-                    }
-                }
-            }
-        }
-
-        return null; // Hotspot IP address not found
-    }
-
-    [Command]
-    private void FindGatewayIPAddress(){
-        foreach (NetworkInterface networkInterface in NetworkInterface.GetAllNetworkInterfaces())
-        {
-            if (networkInterface.OperationalStatus == OperationalStatus.Up)
-            {
-                var properties = networkInterface.GetIPProperties();
-                foreach (var gateway in properties.GatewayAddresses)
-                {
-                    Debug.Log($"Gateway IP: {gateway.Address}");
-                }
-            }
-        }
+        return null; 
     }
 
     private void HandleStartButton()
@@ -225,7 +194,7 @@ public class NetworkManagerController : MonoBehaviour
     private void BroadcastStartGame(){
         try {
             // end
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Broadcast, BROADCAST_PORT);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(GetBroadcastAddress()), BROADCAST_PORT);
 
             // Encode message
             byte[] data = Encoding.UTF8.GetBytes(START_GAME_MESSAGE);
@@ -242,7 +211,7 @@ public class NetworkManagerController : MonoBehaviour
      private void OnReceive(IAsyncResult result){
         if (!isSearchingGame) return;
         // Get address of the sending broadcast
-        IPEndPoint endPoint = new IPEndPoint( IPAddress.Broadcast, BROADCAST_PORT);
+        IPEndPoint endPoint = new IPEndPoint(IPAddress.Broadcast, BROADCAST_PORT);
         
         // Decode broadcasted message
         byte[] data = udpClient.EndReceive(result, ref endPoint);
@@ -262,6 +231,34 @@ public class NetworkManagerController : MonoBehaviour
         }
 
         udpClient.BeginReceive(OnReceive, null);
+    }
+
+    [Command]
+    private string GetBroadcastAddress()
+    {
+        try
+        {
+            // Get local IP address
+            string localIP = GetLocalIPAddress();
+            // Use a default subnet mask for typical hotspots (255.255.255.0)
+            string subnetMask = "255.255.255.0";
+
+            // Calculate broadcast address
+            string[] ipParts = localIP.Split('.');
+            string[] maskParts = subnetMask.Split('.');
+            string[] broadcastParts = new string[4];
+
+            for (int i = 0; i < 4; i++)
+            {
+                broadcastParts[i] = (int.Parse(ipParts[i]) | (~int.Parse(maskParts[i]) & 255)).ToString();
+            }
+
+            return string.Join(".", broadcastParts);
+        }
+        catch
+        {
+            return null; // Return null if an error occurs
+        }
     }
 
     private void OnEnable()
