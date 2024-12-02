@@ -287,7 +287,6 @@ public class NetworkManagerController : MonoBehaviour
     private void OnClientConnected(ulong clientId)
     {
         Debug.Log("Client Connected " + clientId);
-        int currentConnections = NetworkManager.Singleton.ConnectedClients.Count;
 
         ListConnectedClients(); // List clients when a new client connects
     }

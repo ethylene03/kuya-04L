@@ -32,16 +32,16 @@ public class UserDisplayController : MonoBehaviour
     {
         Debug.Log($"Client connected with ID: {clientId}");
 
-        // Call DisplayPlayer or other related logic
-        DisplayPlayers();
+        // Broadcast to display players
+        BroadcastDisplayPlayers();
     }
 
     private void OnSceneLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
     {
         Debug.Log($"Scene synchronization complete for client: {clientId} in scene: {sceneName}");
 
-        // Call your DisplayPlayer method
-        DisplayPlayers();
+        // Broadcast to display players
+        BroadcastDisplayPlayers();
     }
 
     private void OnDestroy()
@@ -54,8 +54,15 @@ public class UserDisplayController : MonoBehaviour
         }
     }
 
+    [ServerRpc]
+    private void BroadcastDisplayPlayers(){
+        Debug.Log("Broadcast to display players");
+        DisplayPlayers();
+    }
+
     
     [Command]
+    [ClientRpc]
 
     private void DisplayPlayers()
     {
