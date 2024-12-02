@@ -6,16 +6,11 @@ public class CrossingControl : MonoBehaviour
     void Update()
     {
         // set speed
-        transform.Translate (new Vector3(0, 1, 0) * globalVariables.playerSpeed * 1700 * Time.deltaTime);
+        float newPos = transform.localPosition.y - (globalVariables.offsetValue * 10);
+        transform.localPosition = new Vector3(transform.localPosition.x, newPos, transform.localPosition.z);
 
         if(transform.localPosition.y <= -8f) {
             Destroy(gameObject);
-        }
-    }
-
-    void OnCollisionEnter2D(Collision2D col) {
-        if(col.gameObject.tag == "Crossing" && gameObject.tag == "Crossing") {
-            Destroy (col.gameObject);
         }
     }
 }
