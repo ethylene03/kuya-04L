@@ -88,10 +88,13 @@ public class carControl : NetworkBehaviour
         isAccelerating = true;
         isBraking = false;
         isSlowingDown = false;
-
+        
         //transform object to simulate animation
-        obj.transform.localScale = new Vector3(89.262f, 74.82434f, 1f);
-        obj.transform.localPosition = new Vector3(-456.84f, -377.23f, -1f);
+        Vector3 currentScale = obj.transform.localScale;
+        obj.transform.localScale = new Vector3(currentScale.x, currentScale.y - 20f, currentScale.z);
+
+        Vector3 currentPosition = obj.transform.localPosition;
+        obj.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y - 40f, currentPosition.z);
     }
 
     public void setSlowDown(GameObject obj) {
@@ -100,8 +103,11 @@ public class carControl : NetworkBehaviour
         isBraking = false;
 
         //transform object to simulate animation
-        obj.transform.localScale = new Vector3(89.262f, 91.2492f, 1f);
-        obj.transform.localPosition = new Vector3(-456.84f, -349.92f, -1f);
+        Vector3 currentScale = obj.transform.localScale;
+        obj.transform.localScale = new Vector3(currentScale.x, currentScale.y + 20f, currentScale.z);
+
+        Vector3 currentPosition = obj.transform.localPosition;
+        obj.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y + 40f, currentPosition.z);
     }
 
     public void setBrakePressed(GameObject obj) {
@@ -110,13 +116,19 @@ public class carControl : NetworkBehaviour
         isSlowingDown = false;
 
         //transform object to simulate animation
-        obj.transform.localScale = new Vector3(91.6488f, 58.62067f, 1f);
-        obj.transform.localPosition = new Vector3(-747.6732f, -424.3f, -1f);
+        Vector3 currentScale = obj.transform.localScale;
+        obj.transform.localScale = new Vector3(currentScale.x, currentScale.y - 20f, currentScale.z);
+
+        Vector3 currentPosition = obj.transform.localPosition;
+        obj.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y - 40f, currentPosition.z);
     }
 
     public void setBrakeUnpressed(GameObject obj) {
         //transform object to simulate animation
-        obj.transform.localScale = new Vector3(91.6488f, 88.8192f, 1f);
-        obj.transform.localPosition = new Vector3(-747.6732f, -389.5452f, -1f);
+        Vector3 currentScale = obj.transform.localScale;
+        obj.transform.localScale = new Vector3(currentScale.x, currentScale.y + 20f, currentScale.z);
+
+        Vector3 currentPosition = obj.transform.localPosition;
+        obj.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y + 40f, currentPosition.z);
     }
 }
