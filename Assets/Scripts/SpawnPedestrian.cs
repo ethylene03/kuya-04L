@@ -11,7 +11,6 @@ public class SpawnPedestrian : MonoBehaviour
     public float minDelay = 0f;
     public float maxDelay = 2f;
 
-    private float prevSpeed = 0;
     private float timer;
 
     void Start() {
