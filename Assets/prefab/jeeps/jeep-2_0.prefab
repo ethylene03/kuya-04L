@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1361314561
+  GlobalObjectIdHash: 585660447
   InScenePlacedSourceGlobalObjectIdHash: 1361314561
   DeferredDespawnTick: 0
   Ownership: 1
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkTransformExpanded: 0
-  AuthorityMode: 0
+  AuthorityMode: 1
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
   SyncPositionX: 1
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 195879720
+  GlobalObjectIdHash: 585660447
   InScenePlacedSourceGlobalObjectIdHash: 2057351025
   DeferredDespawnTick: 0
   Ownership: 1

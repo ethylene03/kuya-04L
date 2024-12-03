@@ -17,6 +17,7 @@ public class playBtn : MonoBehaviour
 
     public void OnMouseDown()
     {
+        Debug.Log("omousedown");
         try {
             TriggerOnClick?.Invoke();
             
