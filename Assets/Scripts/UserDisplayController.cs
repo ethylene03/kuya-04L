@@ -11,46 +11,54 @@ using System.Collections.Concurrent;
 
 public class UserDisplayController : MonoBehaviour
 {
-    private BroadcastManager broadcastManager;
-    private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-// Prefab for displaying a player
+    // Prefab for displaying a player
     [SerializeField] private GameObject playerPrefab;
 
     // Parent where player prefabs will be instantiated
     [SerializeField] private  Transform playerListParent;
+    [SerializeField] private playBtn startBtnScript;
+    [SerializeField] private GameObject maxPlayersPrefab;
 
-    // Port for notifying new connected client
-    private int BROADCAST_PORT = 7780;
-    private string BROADCAST_MESSAGE = "KUYA04L_new_player";
+    private GameConstants gameConstants = new GameConstants();
+
+    private BroadcastManager broadcastManager;
+    private ConcurrentQueue<string> messageQueue = new ConcurrentQueue<string>();
+
+
     
-
-
     private void Start()
     {
-        broadcastManager = new BroadcastManager(BROADCAST_PORT); // Use a different port if needed
+        broadcastManager = new BroadcastManager(gameConstants.NEW_PLAYER_PORT); // Use a different port if needed
         broadcastManager.IsListening = !NetworkManager.Singleton.IsHost;
         broadcastManager.HandleOnReceive = DisplayPlayers;
 
         if(NetworkManager.Singleton != null){
-            NetworkManager.Singleton.SceneManager.OnLoadComplete += OnSceneLoadComplete;
+            // NetworkManager.Singleton.SceneManager.OnLoadComplete += OnSceneLoadComplete;
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+    
         }
 
         UpdatePlayerBoard();
+
+        startBtnScript.TriggerOnClick = HandleStartButton;
         
     }
 
 
     private void OnDestroy()
     {
-        broadcastManager.IsListening = false;
+        Debug.Log("UserDisplayController OnDestroy");
+        broadcastManager.CloseBroadcast();
+        broadcastManager = null;
+
         // Unsubscribe to avoid memory leaks
         if (NetworkManager.Singleton != null)
         {
-            NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnSceneLoadComplete;
+            // NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnSceneLoadComplete;
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
         }
     }
 
@@ -64,9 +72,17 @@ public class UserDisplayController : MonoBehaviour
     }
 
 
+    private void HandleStartButton(){
+        Debug.Log("HandleStartButton UserDisplayController");
+        
+    }
+
     private void OnClientConnected(ulong clientId)
     {
         Debug.Log($"Client connected with ID: {clientId}");
+
+        ShowPlayerBoard();
+        HideMaxPlayers();
 
         // Broadcast to display players
         BroadcastDisplayPlayers();
@@ -80,12 +96,23 @@ public class UserDisplayController : MonoBehaviour
         BroadcastDisplayPlayers();
     }
 
+    private void OnClientDisconnected(ulong clientId)
+    {
+        Debug.Log($"Client {clientId} disconnected.");
+        if(!NetworkManager.Singleton.IsHost){
+            ShowMaxPlayers();
+            HidePlayerBoard();
+            throw new SystemException ("Client cannot join. Probably exceed max client.");
+        }
+
+        BroadcastDisplayPlayers();
+    }
 
     [Command]
     private void BroadcastDisplayPlayers(){
         // Only host will broadcast
         if (NetworkManager.Singleton.IsHost){
-            broadcastManager.SendBroadcast(BROADCAST_MESSAGE);
+            broadcastManager.SendBroadcast(gameConstants.NEW_PLAYER_MESSAGE);
             UpdatePlayerBoard();
         }
     }
@@ -94,7 +121,7 @@ public class UserDisplayController : MonoBehaviour
     private void DisplayPlayers(string receivedMessage = "KUYA04L_new_player", IPEndPoint ipAddress = null){
         Debug.Log("Display players broadcast received. " + receivedMessage + " from: " + ipAddress?.Address);
 
-        if (receivedMessage != BROADCAST_MESSAGE){
+        if (receivedMessage != gameConstants.NEW_PLAYER_MESSAGE){
             return;
         }
         messageQueue.Enqueue(receivedMessage);
@@ -121,10 +148,7 @@ public class UserDisplayController : MonoBehaviour
 
             Debug.Log("Error in Clearing prefabs. " + ex);
         }
-     
-        var playerNames = NetworkManagerController.Instance.playerNames;
 
-        Debug.Log("players count: " + playerNames.Value.Count);
         // Access playerNames and create prefabs
 
         // Validate playerPrefab
@@ -139,6 +163,7 @@ public class UserDisplayController : MonoBehaviour
             return;
         }
 
+        
         try {
             foreach (var player in NetworkManager.Singleton.ConnectedClientsList) {
                 Debug.Log("player : " + player.ClientId.ToString());
@@ -152,5 +177,34 @@ public class UserDisplayController : MonoBehaviour
             Debug.Log("Error instantiating userDisplay. " + ex);
         }
 
+        if ((NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsServer )
+            && NetworkManager.Singleton.ConnectedClients.Count == gameConstants.MAX_CLIENTS
+        ){
+            startBtnScript.ShowButton();
+        } else {
+            startBtnScript.HideButton();
+        }
+
     }
+
+    [Command]
+    private void HideMaxPlayers(){
+        maxPlayersPrefab.SetActive(false);
+    }
+
+    [Command]
+    private void ShowMaxPlayers(){
+        maxPlayersPrefab.SetActive(true);
+    }
+
+    private void HidePlayerBoard(){
+        this.gameObject.SetActive(false);
+    }
+
+    private void ShowPlayerBoard(){
+        this.gameObject.SetActive(true);
+    }
+
+
+
 }

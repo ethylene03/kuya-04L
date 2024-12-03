@@ -153,4 +153,21 @@ public class BroadcastManager
 
         Debug.Log($"Message received from {senderEndpoint.Address}: {receivedMessage}");
     }
+
+    public void CloseBroadcast(){
+        // Stop listening if currently active
+        if (isListening)
+        {
+            StopListening();
+        }
+
+        // Dispose of the UDP client
+        if (udpClient != null)
+        {
+            udpClient.Close();
+            udpClient = null;
+        }
+
+        Debug.Log($"Broadcast on port {broadcastPort} has been closed.");
+    }
 }

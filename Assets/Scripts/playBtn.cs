@@ -2,8 +2,10 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using QFSW.QC;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
@@ -13,7 +15,7 @@ public class playBtn : MonoBehaviour
     public string targetScene;
     public Action TriggerOnClick;
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
         try {
             TriggerOnClick?.Invoke();
@@ -37,6 +39,16 @@ public class playBtn : MonoBehaviour
             Debug.Log(e);
         }
 
+    }
+
+    [Command]
+    public void HideButton(){
+        this.gameObject.SetActive(false);
+    }
+
+    [Command]
+    public void ShowButton(){
+        this.gameObject.SetActive(true); // Shows the button
     }
 
 }
