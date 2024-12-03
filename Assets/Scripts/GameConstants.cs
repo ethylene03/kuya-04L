@@ -3,7 +3,7 @@ public class GameConstants {
     private string newPlayerMessage = "KUYA04L_new_player";
     private int startGamePort = 7778;
     private int newPlayerPort = 7780;
-    private  int maxClients = 1;
+    private  int maxClients = 4;
 
     public string START_GAME_MESSAGE
     {
