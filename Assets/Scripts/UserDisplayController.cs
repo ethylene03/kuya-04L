@@ -57,6 +57,7 @@ public class UserDisplayController : MonoBehaviour
     private void Update(){
         while (messageQueue.TryDequeue(out string message))
         {
+            Debug.Log("Dequeueing " + message);
             // Process the dequeued message
             UpdatePlayerBoard();
         }
