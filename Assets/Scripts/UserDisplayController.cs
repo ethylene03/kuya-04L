@@ -87,6 +87,10 @@ public class UserDisplayController : MonoBehaviour
 
 
     public void HandleStartButton(){
+        if (NetworkManagerController.Instance != null)
+        {
+            NetworkManagerController.Instance.StopBroadcastStartGame();
+        }
         if (NetworkManager.Singleton.IsHost)
         {
             string sceneName = "straight-road";

@@ -26,6 +26,8 @@ public class carControl : NetworkBehaviour
 
     void Update()
     {
+        if(!IsOwner) return;
+        
         if(movementJoystick.Direction.x == 0) {
             position.x += Input.GetAxis("Horizontal") * carSpeed * Time.deltaTime;
         } else{

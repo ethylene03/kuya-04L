@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2430041341827418188}
   - component: {fileID: 2206751997971191271}
   - component: {fileID: 3632661756943222021}
-  - component: {fileID: 343168918325674630}
+  - component: {fileID: -4296994841822499429}
   m_Layer: 0
   m_Name: jeep-1_0
   m_TagString: Untagged
@@ -32,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7406, y: 0.6575, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.44389686, z: 0.6751283}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7662374568823030572}
   m_Father: {fileID: 0}
@@ -207,7 +207,7 @@ MonoBehaviour:
   carSpeed: 5
   maxPos: 6
   movementJoystick: {fileID: 3881087803549984439, guid: ec536a7718376554185e4a856d5ae230, type: 3}
---- !u!114 &343168918325674630
+--- !u!114 &-4296994841822499429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,11 +216,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4662849314591149390}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: da52bf8bbc1de48cfb221a6ff30f7972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 0
+  NetworkTransformExpanded: 1
   AuthorityMode: 1
   TickSyncChildren: 0
   UseUnreliableDeltas: 0

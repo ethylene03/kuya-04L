@@ -1974,9 +1974,29 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1753602672111572679, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753602672111572679, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753602672111572679, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 604706517}
+    - target: {fileID: 1753602672111572679, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 11500000, guid: 62277f7b911624159801030ec034a8f6, type: 3}
+    - target: {fileID: 1753602672111572679, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1753602672111572679, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UserDisplayController, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 3949465188022372144, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
       propertyPath: m_Pivot.x
       value: 0

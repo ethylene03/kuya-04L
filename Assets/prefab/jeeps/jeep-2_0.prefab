@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4657801591872041684}
   - component: {fileID: 8091403093468425768}
   - component: {fileID: 3568476558225026748}
-  - component: {fileID: 5511446860332630205}
+  - component: {fileID: 2198827379169232586}
   m_Layer: 0
   m_Name: jeep-2_0
   m_TagString: Untagged
@@ -32,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7406, y: 0.6575, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.44389686, z: 0.6751283}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5594711451060706573}
   m_Father: {fileID: 0}
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 585660447
+  GlobalObjectIdHash: 1361314561
   InScenePlacedSourceGlobalObjectIdHash: 1361314561
   DeferredDespawnTick: 0
   Ownership: 1
@@ -207,7 +207,7 @@ MonoBehaviour:
   carSpeed: 5
   maxPos: 6
   movementJoystick: {fileID: 3881087803549984439, guid: ec536a7718376554185e4a856d5ae230, type: 3}
---- !u!114 &5511446860332630205
+--- !u!114 &2198827379169232586
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,11 +216,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2701951823219993622}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: da52bf8bbc1de48cfb221a6ff30f7972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 0
+  NetworkTransformExpanded: 1
   AuthorityMode: 1
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 585660447
+  GlobalObjectIdHash: 195879720
   InScenePlacedSourceGlobalObjectIdHash: 2057351025
   DeferredDespawnTick: 0
   Ownership: 1

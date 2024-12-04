@@ -19,12 +19,11 @@ public class NetworkManagerController : MonoBehaviour
 
     // Port number to send the message. This should match with the listening device.
     public string hostIp;
-
-    private UdpClient udpClient;
     private UnityTransport unityTransport;
     private Boolean isSearchingGame = true;
 
     private GameConstants gameConstants = new GameConstants();
+    private BroadcastManager broadcastManager;
 
     [SerializeField] private playBtn playBtnScript;
 
@@ -46,19 +45,25 @@ public class NetworkManagerController : MonoBehaviour
     private void Start(){
 
         Debug.Log("onStart networkmanager");
-        // Handles broadcasting task
-        udpClient = new UdpClient(gameConstants.START_GAME_PORT);
+        broadcastManager = new BroadcastManager(gameConstants.START_GAME_PORT); // Use a different port if needed
+        broadcastManager.IsListening = true;
+        broadcastManager.HandleOnReceive = HandleBroadcastReceive;
 
         // Handles multiplayer networking
         unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 
-  
-        udpClient.BeginReceive(OnReceive, null);
-        
+          
         if (playBtnScript != null)
         {
             playBtnScript.TriggerOnClick = HandleStartButton;
         }
+    }
+
+    public void StopBroadcastStartGame(){
+        Debug.Log("Stopping broadcasting for new game.");
+        CancelInvoke(nameof(BroadcastStartGame));
+        broadcastManager.CloseBroadcast();
+        broadcastManager = null;
     }
 
     [Command]
@@ -108,9 +113,6 @@ public class NetworkManagerController : MonoBehaviour
         // Do not listen to other broadcast that is searching a game. One active game at a time.
         isSearchingGame = false;
 
-        // Enable Broadcasting
-        udpClient.EnableBroadcast = true;
-
         Debug.Log("Creating game.");
 
         getAddress();
@@ -126,11 +128,6 @@ public class NetworkManagerController : MonoBehaviour
             NetworkManager.Singleton.StartHost();
         } 
 
-    }
-
-    [Command]
-    private void CloseGameInvite(){
-        CancelInvoke(nameof(BroadcastStartGame));
     }
 
     private void JoinGame(){
@@ -163,14 +160,7 @@ public class NetworkManagerController : MonoBehaviour
 
     private void BroadcastStartGame(){
         try {
-            // end
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(GetBroadcastAddress()), gameConstants.START_GAME_PORT);
-
-            // Encode message
-            byte[] data = Encoding.UTF8.GetBytes(gameConstants.START_GAME_MESSAGE);
-
-            // Send message
-            udpClient.Send(data, data.Length, endPoint);
+            broadcastManager.SendBroadcast(gameConstants.START_GAME_MESSAGE);
 
             Debug.Log("Broadcast sent: " + gameConstants.START_GAME_MESSAGE);
         } catch(SystemException e){
@@ -178,19 +168,12 @@ public class NetworkManagerController : MonoBehaviour
         }
     }
 
-     private void OnReceive(IAsyncResult result){
+     private void HandleBroadcastReceive(string receivedMessage, IPEndPoint endPoint){
         if (!isSearchingGame) return;
-        // Get address of the sending broadcast
-        IPEndPoint endPoint = new IPEndPoint(IPAddress.Broadcast, gameConstants.START_GAME_PORT);
         
-        // Decode broadcasted message
-        byte[] data = udpClient.EndReceive(result, ref endPoint);
-        
-        string message = Encoding.UTF8.GetString(data);
-        
-        Debug.Log($"Received broadcast from {endPoint.Address}:{endPoint.Port}: {message}");
+        Debug.Log($"Received broadcast from {endPoint.Address}:{endPoint.Port}: {receivedMessage}");
 
-        if (message == gameConstants.START_GAME_MESSAGE){
+        if (receivedMessage == gameConstants.START_GAME_MESSAGE){
 
             // store ip address of host
             hostIp = endPoint.Address.ToString();
@@ -200,7 +183,6 @@ public class NetworkManagerController : MonoBehaviour
             Debug.Log("Broadcast received but not from the game.");
         }
 
-        udpClient.BeginReceive(OnReceive, null);
     }
 
     [Command]
