@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 5626731870840925850}
   - component: {fileID: 7581159549024388224}
   - component: {fileID: 1051371452826055922}
-  - component: {fileID: 5826664160765127281}
-  - component: {fileID: 5801198521405901015}
   m_Layer: 0
   m_Name: flag-1
   m_TagString: Untagged
@@ -112,47 +110,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5826664160765127281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205352106354287787}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4391084
-  InScenePlacedSourceGlobalObjectIdHash: 2057351025
-  DeferredDespawnTick: 0
-  Ownership: 1
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
---- !u!114 &5801198521405901015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205352106354287787}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffad0c3e74cf24c858be9a11552a0b38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  carSpeed: 5
-  maxPos: 6
-  movementJoystick: {fileID: 3881087803549984439, guid: ec536a7718376554185e4a856d5ae230, type: 3}
 --- !u!1 &3755046675105071563
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,6 +317,7 @@ MonoBehaviour:
   carSpeed: 5
   maxPos: 6
   movementJoystick: {fileID: 3881087803549984439, guid: ec536a7718376554185e4a856d5ae230, type: 3}
+  controls: {fileID: 1945078251285101687, guid: b612d0064ac1e485d918e1a698e4a93a, type: 3}
 --- !u!114 &-3686186577869734769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,9 +338,9 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
+  SyncRotAngleX: 0
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0

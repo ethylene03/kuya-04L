@@ -85,8 +85,8 @@ public class NetworkManagerController : MonoBehaviour
         foreach (var networkInterface in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
         {
             if (
-                networkInterface.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && 
-                networkInterface.ToString().StartsWith("192")
+                networkInterface.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork 
+                && networkInterface.ToString().StartsWith("192")
             )
             {
                 return networkInterface.ToString();
@@ -106,6 +106,20 @@ public class NetworkManagerController : MonoBehaviour
             JoinGame();
         }
     }
+
+
+    // Temporary 
+    public void StartHost(){
+        Debug.Log("Starting host");
+        NetworkManager.Singleton.StartHost();
+    }
+
+    // Temporary 
+    public void StartClient(){
+        Debug.Log("Starting client");
+        NetworkManager.Singleton.StartClient();
+    }
+
 
     // Broadcasts to LAN that they will start a game.
     [Command]

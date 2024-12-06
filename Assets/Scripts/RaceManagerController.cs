@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class RaceManagerController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> jeepPrefab;
-    [SerializeField] private Joystick movementJoystick;
+    [SerializeField] private VariableJoystick movementJoystick;
 
 
     private void OnEnable()
@@ -28,6 +30,37 @@ public class RaceManagerController : MonoBehaviour
         }
     }
 
+    private void SpawnJeep(){
+
+        // if(!IsOwner) return;
+
+        List<ulong> clients = (List<ulong>)NetworkManager.Singleton.ConnectedClientsIds;
+        Debug.Log("List of clients ");
+        Debug.Log(clients);
+        int ownerIndex = Random.Range(0, jeepPrefab.Count);
+
+        Vector3 basePosition = new Vector3(-0.2f, -1, 0);
+        float xOffset = 1.5f;
+        basePosition += (1 + ownerIndex) * new Vector3( xOffset, 0, 0);
+
+        GameObject selectedJeep = jeepPrefab[ownerIndex];
+        GameObject car = Instantiate(selectedJeep, basePosition, Quaternion.identity);
+        car.GetComponent<NetworkObject>().Spawn();
+
+
+        carControl carController = car.GetComponent<carControl>();
+        
+        if (carController != null && movementJoystick != null)
+        {
+            Debug.Log("Assigning movementJoystick");
+            VariableJoystick joyStick = Instantiate(movementJoystick);
+            // carController.movementJoystick = joyStick;
+        } else {
+            Debug.Log("Can't find carController");
+        }
+
+    }
+
     private void SpawnPlayerJeeps()
     {
         Debug.Log("SpawnPlayers");
@@ -43,7 +76,7 @@ public class RaceManagerController : MonoBehaviour
             GameObject selectedJeep = jeepPrefab[index];
 
 
-            basePosition += new Vector3( xOffset, 0, 0);
+            basePosition += (index + 1) * new Vector3( xOffset, 0, 0);
 
 
             // Instantiate the car prefab
@@ -52,15 +85,6 @@ public class RaceManagerController : MonoBehaviour
             // Assign ownership to the respective client
             car.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
 
-            // Assign the shared joystick to the CarController script
-            carControl carController = car.GetComponent<carControl>();
-            if (carController != null && movementJoystick != null)
-            {
-                Debug.Log("Assigning movementJoystick");
-                carController.movementJoystick = movementJoystick;
-            } else {
-                Debug.Log("Can't ginf carController");
-            }
             index ++;
         }
     }

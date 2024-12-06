@@ -1,3 +1,4 @@
+using QFSW.QC;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,28 +15,65 @@ public class carControl : NetworkBehaviour
     public float maxPos = 5.3f;
     
     Vector3 position;
-    public Joystick movementJoystick;
+    private VariableJoystick movementJoystick;
+    public GameObject controls;
     private bool isAccelerating = false;
     private bool isBraking = false;
     private bool isSlowingDown = false;
 
     void Start()
     {
+        if (IsLocalPlayer){
+            Debug.Log("I am owner. " + OwnerClientId);
+            InstantiateControls();
+        }
+        Debug.Log("carControl start " + OwnerClientId);
         position = transform.position;
+    }
+
+    [Command]
+    public void InstantiateControls(){
+        if(controls != null){
+            Debug.Log("Instantiating controls");
+            GameObject controller = Instantiate(controls);
+            movementJoystick = controller.GetComponentInChildren<VariableJoystick>();
+            Debug.Log("Joystick " + movementJoystick);
+        } else {
+            Debug.Log("Controls not found.");
+        }
     }
 
     void Update()
     {
-        if(!IsOwner) return;
+        if(!IsOwner){ 
+            // Debug.Log("Not the owner");
+            return;
+        }
+
+        if (movementJoystick == null)
+        {
+            Debug.LogWarning("Joystick not initialized yet.");
+            return;
+        }
+
         
         if(movementJoystick.Direction.x == 0) {
             position.x += Input.GetAxis("Horizontal") * carSpeed * Time.deltaTime;
         } else{
             position.x += movementJoystick.Direction.x * carSpeed * Time.deltaTime;
         }
-
+        // if (movementJoystick != null) {
+        //     Debug.Log("movementJoystick NOT null");
+        // } else {
+        //     Debug.Log("movementJoystick null");
+        // }
+        // Debug.Log("movementJoystick " + movementJoystick.Direction.x);
+        // Debug.Log("position.x before " + position.x);
         position.x = Mathf.Clamp (position.x, -maxPos, maxPos);
+        // Debug.Log("position.x after " + position.x);
+        // Debug.Log("transform.position before: " + transform.position);
         transform.position = position;
+        // Debug.Log("transform.position after: " + transform.position);
 
         if(isAccelerating) {
             Accelerate();
