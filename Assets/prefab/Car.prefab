@@ -132,6 +132,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   carSpeed: 2
   maxPos: 2
+  joystick: {fileID: 114206060446168330, guid: b737c9d1a3e7e174793d05f4637d64e4, type: 3}
 --- !u!50 &5535714795212959326
 Rigidbody2D:
   serializedVersion: 5

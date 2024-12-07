@@ -5,6 +5,8 @@ public class carControl : NetworkBehaviour
 {
     public float carSpeed;
     public float maxPos = 2.0f;
+
+    private Joystick joystick;
     Vector3 position;
 
 
@@ -15,13 +17,30 @@ public class carControl : NetworkBehaviour
         position.x = randomX;
         transform.position = position;
         Debug.Log(OwnerClientId + " = " + position.x);
+
+        if (joystick == null)
+        {
+            joystick = FindFirstObjectByType<Joystick>();
+
+            if (joystick == null)
+            {
+                Debug.LogError("Joystick not found in the scene. Make sure it's added and active.");
+            }
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!IsOwner) return;
-        position.x += Input.GetAxis ("Horizontal") * carSpeed * Time.deltaTime;
+        if(!IsOwner || !joystick) return;
+
+        
+        float horizontalInput = joystick.Horizontal;
+        // Debug.Log(horizontalInput);
+        // float horizontalInput = Input.GetAxis ("Horizontal");
+        
+        position.x += horizontalInput * carSpeed * Time.deltaTime;
         position.x = Mathf.Clamp (position.x, -maxPos, maxPos);
         transform.position = position;
     }
@@ -31,5 +50,7 @@ public class carControl : NetworkBehaviour
             Destroy (col.gameObject);
         }
     }
+
+
 
 }

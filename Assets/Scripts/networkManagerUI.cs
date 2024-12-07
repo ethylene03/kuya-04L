@@ -62,7 +62,7 @@ public class networkManagerUI : MonoBehaviour
         udpClient.EnableBroadcast = true;
         NetworkManager.Singleton.StartHost();
         isListening = false;
-        InvokeRepeating(nameof(BroadcastStartGame), 0, 1.0f);
+        // InvokeRepeating(nameof(BroadcastStartGame), 0, 1.0f);
     }
 
     private void BroadcastStartGame(){
