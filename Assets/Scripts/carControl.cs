@@ -1,3 +1,4 @@
+using System.Collections;
 using QFSW.QC;
 using Unity.Netcode;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class carControl : NetworkBehaviour
     public float maxPos = 5.3f;
     
     Vector3 position;
-    private VariableJoystick movementJoystick;
+    private Joystick movementJoystick;
     public GameObject controls;
     private bool isAccelerating = false;
     private bool isBraking = false;
@@ -23,12 +24,29 @@ public class carControl : NetworkBehaviour
 
     void Start()
     {
-        if (IsLocalPlayer){
-            Debug.Log("I am owner. " + OwnerClientId);
-            InstantiateControls();
-        }
-        Debug.Log("carControl start " + OwnerClientId);
+ 
         position = transform.position;
+        StartCoroutine(FindJoystickWithDelay());
+
+    }
+
+    IEnumerator FindJoystickWithDelay()
+    {
+        // Wait for a short delay (you can adjust the time as needed)
+        yield return new WaitForSeconds(3);
+        SetupJoystick();
+    }
+
+
+    public void SetupJoystick(){
+
+        if(movementJoystick == null && IsOwner){
+            movementJoystick = FindFirstObjectByType<Joystick>();
+
+            if (movementJoystick == null){
+                Debug.LogError("Cannot find joystick in the scene");
+            }
+        }
     }
 
     [Command]
@@ -45,14 +63,8 @@ public class carControl : NetworkBehaviour
 
     void Update()
     {
-        if(!IsOwner){ 
+        if(!IsOwner || !movementJoystick){ 
             // Debug.Log("Not the owner");
-            return;
-        }
-
-        if (movementJoystick == null)
-        {
-            Debug.LogWarning("Joystick not initialized yet.");
             return;
         }
 
@@ -62,13 +74,7 @@ public class carControl : NetworkBehaviour
         } else{
             position.x += movementJoystick.Direction.x * carSpeed * Time.deltaTime;
         }
-        // if (movementJoystick != null) {
-        //     Debug.Log("movementJoystick NOT null");
-        // } else {
-        //     Debug.Log("movementJoystick null");
-        // }
-        // Debug.Log("movementJoystick " + movementJoystick.Direction.x);
-        // Debug.Log("position.x before " + position.x);
+  
         position.x = Mathf.Clamp (position.x, -maxPos, maxPos);
         // Debug.Log("position.x after " + position.x);
         // Debug.Log("transform.position before: " + transform.position);

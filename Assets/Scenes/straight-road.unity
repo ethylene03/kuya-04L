@@ -1692,7 +1692,6 @@ MonoBehaviour:
   - {fileID: 4467199837657895518, guid: dfaa4ae6880ef438f89ebe0588b580b1, type: 3}
   - {fileID: 3755046675105071563, guid: dac37b8b1d0e748e39856442b5f3eaaf, type: 3}
   - {fileID: 794902972790791099, guid: baddf85b2a4334c5892d6b51ce9704d6, type: 3}
-  movementJoystick: {fileID: 0}
 --- !u!4 &635764221
 Transform:
   m_ObjectHideFlags: 0
@@ -3163,7 +3162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1945078251285101687, guid: b612d0064ac1e485d918e1a698e4a93a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5456000870748376064, guid: b612d0064ac1e485d918e1a698e4a93a, type: 3}
       propertyPath: m_Pivot.x
