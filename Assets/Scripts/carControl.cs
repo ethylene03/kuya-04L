@@ -1,7 +1,9 @@
 using System.Collections;
 using QFSW.QC;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 public class carControl : NetworkBehaviour
@@ -26,28 +28,93 @@ public class carControl : NetworkBehaviour
     {
  
         position = transform.position;
-        StartCoroutine(FindJoystickWithDelay());
+        StartCoroutine(SetupControlsWithDelay());
 
     }
 
-    IEnumerator FindJoystickWithDelay()
+    IEnumerator SetupControlsWithDelay()
     {
         // Wait for a short delay (you can adjust the time as needed)
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         SetupJoystick();
+        SetupAccelerate();
+        SetupBrake();
     }
 
 
-    public void SetupJoystick(){
+    private void SetupJoystick(){
 
         if(movementJoystick == null && IsOwner){
             movementJoystick = FindFirstObjectByType<Joystick>();
 
             if (movementJoystick == null){
-                Debug.LogError("Cannot find joystick in the scene");
+                Debug.LogError("Cannot find joystick in the scene.");
             }
         }
     }
+
+    private void SetupAccelerate(){
+        GameObject accelerator = GameObject.Find("Accelerate");
+
+        if (accelerator == null){
+            Debug.LogError("Cannot find accelerator in the scene.");
+            return;
+        }
+
+        EventTrigger eventTrigger = accelerator.AddComponent<EventTrigger>();
+
+        // -------- Pointer Down ------------
+        EventTrigger.Entry pointerDown = new EventTrigger.Entry();
+        pointerDown.eventID = EventTriggerType.PointerDown;
+
+        // Define what happens when PointerDown is triggered
+        pointerDown.callback.AddListener((eventData) => { setAccelerate(this.gameObject); });
+
+        // Add the entry to the EventTrigger
+        eventTrigger.triggers.Add(pointerDown);
+
+        // -------- Pointer Up ------------
+        EventTrigger.Entry pointerUp = new EventTrigger.Entry();
+        pointerUp.eventID = EventTriggerType.PointerUp;
+
+        // Define what happens when PointerDown is triggered
+        pointerUp.callback.AddListener((eventData) => { setSlowDown(this.gameObject); });
+
+        // Add the entry to the EventTrigger
+        eventTrigger.triggers.Add(pointerUp);
+    }
+
+        private void SetupBrake(){
+        GameObject accelerator = GameObject.Find("Brake");
+
+        if (accelerator == null){
+            Debug.LogError("Cannot find Brake in the scene.");
+            return;
+        }
+
+        EventTrigger eventTrigger = accelerator.AddComponent<EventTrigger>();
+
+        // -------- Pointer Down ------------
+        EventTrigger.Entry pointerDown = new EventTrigger.Entry();
+        pointerDown.eventID = EventTriggerType.PointerDown;
+
+        // Define what happens when PointerDown is triggered
+        pointerDown.callback.AddListener((eventData) => { setBrakePressed(this.gameObject); });
+
+        // Add the entry to the EventTrigger
+        eventTrigger.triggers.Add(pointerDown);
+
+        // -------- Pointer Up ------------
+        EventTrigger.Entry pointerUp = new EventTrigger.Entry();
+        pointerUp.eventID = EventTriggerType.PointerUp;
+
+        // Define what happens when PointerDown is triggered
+        pointerUp.callback.AddListener((eventData) => { setBrakeUnpressed(this.gameObject); });
+
+        // Add the entry to the EventTrigger
+        eventTrigger.triggers.Add(pointerUp);
+    }
+
 
     [Command]
     public void InstantiateControls(){
@@ -130,7 +197,9 @@ public class carControl : NetworkBehaviour
     }
 
     public void setAccelerate(GameObject obj) {
-        // Debug.Log("pressed down");
+        if(!IsOwner) return;
+
+        Debug.Log("pressed down");
         isAccelerating = true;
         isBraking = false;
         isSlowingDown = false;
@@ -144,6 +213,8 @@ public class carControl : NetworkBehaviour
     }
 
     public void setSlowDown(GameObject obj) {
+        if(!IsOwner) return;
+
         isSlowingDown = true;
         isAccelerating = false;
         isBraking = false;
@@ -157,6 +228,8 @@ public class carControl : NetworkBehaviour
     }
 
     public void setBrakePressed(GameObject obj) {
+        if(!IsOwner) return;
+
         isBraking = true;
         isAccelerating = false;
         isSlowingDown = false;
@@ -170,6 +243,8 @@ public class carControl : NetworkBehaviour
     }
 
     public void setBrakeUnpressed(GameObject obj) {
+        if(!IsOwner) return;
+
         //transform object to simulate animation
         Vector3 currentScale = obj.transform.localScale;
         obj.transform.localScale = new Vector3(currentScale.x, currentScale.y + 20f, currentScale.z);
