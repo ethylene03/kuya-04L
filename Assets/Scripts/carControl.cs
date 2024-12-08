@@ -68,7 +68,7 @@ public class carControl : NetworkBehaviour
         pointerDown.eventID = EventTriggerType.PointerDown;
 
         // Define what happens when PointerDown is triggered
-        pointerDown.callback.AddListener((eventData) => { setAccelerate(this.gameObject); });
+        pointerDown.callback.AddListener((eventData) => { setAccelerate(accelerator); });
 
         // Add the entry to the EventTrigger
         eventTrigger.triggers.Add(pointerDown);
@@ -78,28 +78,28 @@ public class carControl : NetworkBehaviour
         pointerUp.eventID = EventTriggerType.PointerUp;
 
         // Define what happens when PointerDown is triggered
-        pointerUp.callback.AddListener((eventData) => { setSlowDown(this.gameObject); });
+        pointerUp.callback.AddListener((eventData) => { setSlowDown(accelerator); });
 
         // Add the entry to the EventTrigger
         eventTrigger.triggers.Add(pointerUp);
     }
 
         private void SetupBrake(){
-        GameObject accelerator = GameObject.Find("Brake");
+        GameObject brake = GameObject.Find("Brake");
 
-        if (accelerator == null){
+        if (brake == null){
             Debug.LogError("Cannot find Brake in the scene.");
             return;
         }
 
-        EventTrigger eventTrigger = accelerator.AddComponent<EventTrigger>();
+        EventTrigger eventTrigger = brake.AddComponent<EventTrigger>();
 
         // -------- Pointer Down ------------
         EventTrigger.Entry pointerDown = new EventTrigger.Entry();
         pointerDown.eventID = EventTriggerType.PointerDown;
 
         // Define what happens when PointerDown is triggered
-        pointerDown.callback.AddListener((eventData) => { setBrakePressed(this.gameObject); });
+        pointerDown.callback.AddListener((eventData) => { setBrakePressed(brake); });
 
         // Add the entry to the EventTrigger
         eventTrigger.triggers.Add(pointerDown);
@@ -109,7 +109,7 @@ public class carControl : NetworkBehaviour
         pointerUp.eventID = EventTriggerType.PointerUp;
 
         // Define what happens when PointerDown is triggered
-        pointerUp.callback.AddListener((eventData) => { setBrakeUnpressed(this.gameObject); });
+        pointerUp.callback.AddListener((eventData) => { setBrakeUnpressed(brake); });
 
         // Add the entry to the EventTrigger
         eventTrigger.triggers.Add(pointerUp);
