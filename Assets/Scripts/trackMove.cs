@@ -20,8 +20,8 @@ public class trackMove : MonoBehaviour
     }
 
     void Start() {
-        globalVariables.currentOffset = 0;
-        spawnCrossingAt = Random.Range(globalVariables.currentOffset + 5f, globalVariables.currentOffset + 15f);
+        playerCar.currentOffset.Value = 0;
+        spawnCrossingAt = Random.Range(playerCar.currentOffset.Value + 5f, playerCar.currentOffset.Value + 15f);
         spawnLandmarksAt = Random.Range(landmarkDistance[0], landmarkDistance[1]);
         landmarkIdx = 0;
     }
@@ -40,29 +40,29 @@ public class trackMove : MonoBehaviour
             Time.timeScale = 1;
 
             // calculate offset base on player speed
-            float offsetValue = Mathf.Clamp(playerCar.playerSpeed.Value, 0, playerCar.maxPlayerSpeed);
+            float offsetValue = Mathf.Clamp(globalVariables.playerSpeed, 0, globalVariables.maxPlayerSpeed);
             globalVariables.offsetValue = offsetValue;
-            globalVariables.currentOffset += offsetValue;
+            playerCar.currentOffset.Value += offsetValue;
             // Debug.Log("speed: " + playerCar.playerSpeed.Value + ", offset: " + offsetValue + ", currOffset: " + globalVariables.currentOffset);
             
             // set track to move
-            offset = new Vector2(0, globalVariables.currentOffset);
+            offset = new Vector2(0, playerCar.currentOffset.Value);
             Debug.Log("trackMove offset: " + offset);
-            
+
             GetComponent<Renderer> ().material.mainTextureOffset = offset;
 
-            AdjustOpponentCars();
+            // AdjustOpponentCars();
 
             // spawn crossing
-            if(globalVariables.currentOffset >= spawnCrossingAt) {
+            if(playerCar.currentOffset.Value >= spawnCrossingAt) {
                 SpawnObjectAtOffset(crossingObject);
-                spawnCrossingAt = Random.Range(globalVariables.currentOffset + 5f, globalVariables.currentOffset + 15f);
+                spawnCrossingAt = Random.Range(playerCar.currentOffset.Value + 5f, playerCar.currentOffset.Value + 15f);
             }
 
             // spawn landmarks
-            if(globalVariables.currentOffset >= spawnLandmarksAt) {
+            if(playerCar.currentOffset.Value >= spawnLandmarksAt) {
                 SpawnObjectAtOffset(landmarks[landmarkIdx]);
-                spawnLandmarksAt = Random.Range(globalVariables.currentOffset + landmarkDistance[0], globalVariables.currentOffset + landmarkDistance[1]);
+                spawnLandmarksAt = Random.Range(playerCar.currentOffset.Value + landmarkDistance[0], playerCar.currentOffset.Value + landmarkDistance[1]);
 
                 if(landmarkIdx == 3) {
                     // end game
@@ -84,17 +84,30 @@ public class trackMove : MonoBehaviour
 
     void AdjustOpponentCars(){
         // Fetch all opponent cars and update their positions based on their synced speed
-    //    var opponentCars = GameObject.FindGameObjectsWithTag("PlayerCar");
+       var opponentCars = GameObject.FindGameObjectsWithTag("PlayerCar");
+       float ownerOffset = 0f;
        
-    //     foreach (var car in opponentCars)
-    //     {
-    //         carControl carObj = car.GetComponent<carControl>();
-    //         if (!carObj.IsOwner)
-    //         {
-    //             float opponentSpeed = carObj.playerSpeed.Value;
-    //             car.transform.position += Vector3.up * opponentSpeed * Time.deltaTime;
-    //         }
-    //     }
+        foreach (var car in opponentCars) {
+            carControl carObj = car.GetComponent<carControl>();
+
+            if (carObj.IsOwner){
+                ownerOffset = carObj.currentOffset.Value;
+            }
+        }
+
+        Debug.Log("ownerOffset " + ownerOffset);
+
+        foreach (var car in opponentCars)
+        {
+            carControl carObj = car.GetComponent<carControl>();
+            Debug.Log("CarObj id: " + carObj.OwnerClientId);
+
+            if (!carObj.IsOwner)
+            {
+                
+                car.transform.localPosition = new Vector3(car.transform.position.x, carObj.currentOffset.Value - playerCar.currentOffset.Value, car.transform.position.y);
+            }
+        }
     }
 
 }

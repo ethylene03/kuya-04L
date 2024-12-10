@@ -10,9 +10,10 @@ using UnityEngine.UIElements;
 public class carControl : NetworkBehaviour
 {
     public float carSpeed = 5.0f;
-    public float maxPlayerSpeed = 0.01f;
+    // public float maxPlayerSpeed = 0.01f;
     private float lerpSpeed = 5.0f;
-    public NetworkVariable<float> playerSpeed = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    // public NetworkVariable<float> playerSpeed = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<float> currentOffset = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<Vector3> syncedPosition = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     // scale is: 1 kph = 0.00041 units (MAX 120 kph = MAX 0.05)
@@ -171,7 +172,7 @@ public class carControl : NetworkBehaviour
 
             position.x = Mathf.Clamp (position.x, -maxPos, maxPos);
             transform.position = position;
-            Debug.Log("IsOwner" + OwnerClientId + " " + transform.position);
+            // Debug.Log("IsOwner" + OwnerClientId + " " + transform.position);
 
             syncedPosition.Value = transform.position;
 
@@ -190,6 +191,8 @@ public class carControl : NetworkBehaviour
         } else {
             // transform.position = Vector3.Lerp(transform.position, syncedPosition.Value, Time.deltaTime * lerpSpeed);
             // Debug.Log("NOT IsOwner" + OwnerClientId + " " + transform.position);
+
+            AdjustPosition();
         }
 
         
@@ -207,27 +210,27 @@ public class carControl : NetworkBehaviour
     }
 
     private void Accelerate() {
-        if(playerSpeed.Value < maxPlayerSpeed) {
-            float speed = playerSpeed.Value + accelerateInterval * Time.deltaTime;
-            playerSpeed.Value = Mathf.Max(0, speed);
+        if(globalVariables.playerSpeed < globalVariables.maxPlayerSpeed) {
+            float speed = globalVariables.playerSpeed + accelerateInterval * Time.deltaTime;
+            globalVariables.playerSpeed = Mathf.Max(0, speed);
         }
     }
 
     private void SlowDown() {
-        if(playerSpeed.Value > accelerateInterval) {
-            float speed = playerSpeed.Value - (accelerateInterval * Time.deltaTime);
-            playerSpeed.Value = Mathf.Max(0, speed);
+        if(globalVariables.playerSpeed > accelerateInterval) {
+            float speed = globalVariables.playerSpeed - (accelerateInterval * Time.deltaTime);
+            globalVariables.playerSpeed = Mathf.Max(0, speed);
         } else {
-            playerSpeed.Value = 0;
+            globalVariables.playerSpeed = 0;
         }
     }
 
     private void Brake() {
-        if(playerSpeed.Value > breakInterval) {
-            float speed = playerSpeed.Value - (breakInterval * Time.deltaTime);
-            playerSpeed.Value = Mathf.Max(0, speed);
+        if(globalVariables.playerSpeed > breakInterval) {
+            float speed = globalVariables.playerSpeed - (breakInterval * Time.deltaTime);
+            globalVariables.playerSpeed = Mathf.Max(0, speed);
         } else {
-            playerSpeed.Value = 0;
+            globalVariables.playerSpeed = 0;
         }
     }
 
@@ -286,5 +289,10 @@ public class carControl : NetworkBehaviour
 
         Vector3 currentPosition = obj.transform.localPosition;
         obj.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y + 40f, currentPosition.z);
+    }
+
+    private void AdjustPosition(){
+        // GameObject ownerCar = GameObject.Find("Brake");
+        // currentOffset.Value -
     }
 }

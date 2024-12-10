@@ -16,7 +16,7 @@ public class PeopleControl : MonoBehaviour
     void Update()
     {
         // get speed relative to player's speed
-        speed = baseSpeed - (playerCar.playerSpeed.Value * 1000);
+        speed = baseSpeed - (globalVariables.playerSpeed * 1000);
         // Debug.Log("oppSpeed: " + speed + ", ur speed: " + globalVariables.playerSpeed);
 
         // set speed
