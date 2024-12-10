@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/straight-road.unity
     guid: d38812854f0f1418ab9a67cbb5e40c0a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/rank-board.unity
     guid: 6f05fa84d62034ea9a4b3a1c3a41c03e
   m_configObjects:
