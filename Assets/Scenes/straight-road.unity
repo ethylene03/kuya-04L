@@ -278,8 +278,8 @@ Camera:
   m_GameObject: {fileID: 62632359}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -900,6 +900,7 @@ MonoBehaviour:
   minY: -4.5
   minDelay: 0
   maxDelay: 2
+  playerCar: {fileID: 0}
 --- !u!4 &342016800
 Transform:
   m_ObjectHideFlags: 0
@@ -1459,8 +1460,7 @@ MonoBehaviour:
   landmarkDistance:
   - 10
   - 20
-  winText: {fileID: 311927274}
-  loseText: {fileID: 1329555575}
+  gameOverText: {fileID: 0}
   playerCar: {fileID: 0}
 --- !u!1 &592147204
 GameObject:
