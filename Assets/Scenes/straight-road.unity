@@ -732,7 +732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &311927275
 RectTransform:
   m_ObjectHideFlags: 0
@@ -772,7 +772,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: YOU WIN
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9ac31685515ff4fce910aeefab647f0e, type: 2}
   m_sharedMaterial: {fileID: -1019081423178896233, guid: 9ac31685515ff4fce910aeefab647f0e, type: 2}
