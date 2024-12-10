@@ -1,6 +1,7 @@
 public class GameConstants {
     private string startGameMessage = "KUYA04L_GAMEHOST";
     private string newPlayerMessage = "KUYA04L_NEW_PLAYER";
+    private string gameStart = "KUYA04L_GAME_START";
     
     private string exceedMaxClients = "KUYA04L_EXCEED_MAX_CLIENTS";
     private string gameOverLoseMessage = "KUYA04L_GAME_OVER_LOSE";
@@ -88,6 +89,15 @@ public class GameConstants {
         set
         {
             gameOverLoseMessage = value;
+        }
+    }
+
+    public string GAME_START 
+    {
+        get => gameStart;
+        set
+        {
+            gameStart = value;
         }
     }
 }
