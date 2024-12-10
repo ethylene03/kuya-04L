@@ -26,7 +26,7 @@ public class NetworkManagerController : MonoBehaviour
 
     private GameConstants gameConstants = new GameConstants();
     private BroadcastManager broadcastManager;
-    private bool isGameActive = false;
+    public bool isGameActive = false;
 
     [SerializeField] private playBtn playBtnScript;
 
@@ -126,7 +126,6 @@ public class NetworkManagerController : MonoBehaviour
     private void CreateGame(){
         // Do not listen to other broadcast that is searching a game. One active game at a time.
         isSearchingGame = false;
-        isGameActive = true;
 
         Debug.Log("Creating game.");
 

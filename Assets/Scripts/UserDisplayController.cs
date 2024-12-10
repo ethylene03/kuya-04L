@@ -42,11 +42,22 @@ public class UserDisplayController : MonoBehaviour
 
         if(playBtn != null){
             playBtn.SetActive(NetworkManager.Singleton.IsHost);
+
+            checkClientCount();
         }
 
         UpdatePlayerBoard();
         
         
+    }
+
+    private void checkClientCount(){
+        int clientCount = NetworkManager.Singleton.ConnectedClients.Count;
+        if(clientCount <= 1){
+            playBtn.SetActive(false);
+        } else {
+            playBtn.SetActive(true);
+        }
     }
 
 
@@ -72,6 +83,7 @@ public class UserDisplayController : MonoBehaviour
             // Process the dequeued message
             UpdatePlayerBoard();
         }
+        checkClientCount();
     }
 
 
@@ -82,6 +94,7 @@ public class UserDisplayController : MonoBehaviour
         }
         if (NetworkManager.Singleton.IsHost)
         {
+            NetworkManagerController.Instance.isGameActive = true;
             string sceneName = "straight-road";
             NetworkManager.Singleton.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }

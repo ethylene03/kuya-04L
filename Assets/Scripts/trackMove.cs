@@ -136,7 +136,7 @@ public class trackMove : MonoBehaviour
         messageQueue.Enqueue(receivedMessage);
     }
 
-    void EndGame(string receivedMessage = null, Boolean restart = true) {
+    void EndGame(string receivedMessage = null) {
         try {
             if(isWinner && receivedMessage == gameConstants.GAME_OVER_LOSE) return;
             Debug.Log("EndGame "+ receivedMessage);
@@ -163,7 +163,7 @@ public class trackMove : MonoBehaviour
                 TMP_Text winTMP_Text= winText.GetComponent<TMP_Text>();
                 winTMP_Text.text = "You Lose";
             }
-            
+
             
             Time.timeScale = 0;
             new WaitForSecondsRealtime(5f);
@@ -175,8 +175,15 @@ public class trackMove : MonoBehaviour
 
     void AdjustOpponentCars(){
         // Fetch all opponent cars and update their positions based on their synced speed
-       var opponentCars = GameObject.FindGameObjectsWithTag("PlayerCar");
-       float ownerOffset = 0f;
+        var opponentCars = GameObject.FindGameObjectsWithTag("PlayerCar");
+        float ownerOffset = 0f;
+
+        if (opponentCars.Length == 1){
+            carControl carObj = opponentCars[0].GetComponent<carControl>();
+            if(carObj.IsOwner){
+                EndGame(gameConstants.GAME_OVER_WIN);
+            }
+        }
        
         foreach (var car in opponentCars) {
             carControl carObj = car.GetComponent<carControl>();
