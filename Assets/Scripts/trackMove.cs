@@ -99,7 +99,7 @@ public class trackMove : MonoBehaviour
         GetComponent<Renderer> ().material.mainTextureOffset = offset;
     }
 
-    void EndGame(string receivedMessage = null, IPEndPoint endPoint = null) {
+    public void EndGame(string receivedMessage = null, IPEndPoint endPoint = null) {
         Debug.Log("EndGame "+ receivedMessage);
         globalVariables.startGame = false;
         

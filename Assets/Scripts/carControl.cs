@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using QFSW.QC;
@@ -22,6 +23,7 @@ public class carControl : NetworkBehaviour
     private float accelerateInterval = 0.01f;
     private float breakInterval = 0.05f;
     public float maxPos = 5.3f;
+    private GameConstants gameConstants;
     
     Vector3 position;
     private Joystick movementJoystick;
@@ -201,11 +203,18 @@ public class carControl : NetworkBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D col) {
-        if(col.gameObject.tag == "EnemyCar") {
-            // destroy player
-            Destroy (gameObject);
+        try {
+            trackMove track = FindFirstObjectByType<trackMove>();
+            gameConstants = new GameConstants();
 
-            // endgame (pause)
+            if(col.gameObject.tag == "EnemyCar") {
+                // set player as lose
+                Debug.Log(gameConstants.GAME_OVER_LOSE);
+                track.EndGame(gameConstants.GAME_OVER_LOSE);
+                globalVariables.startGame = false;
+            }
+        } catch(Exception e) {
+            Debug.Log(e);
             globalVariables.startGame = false;
         }
     }
