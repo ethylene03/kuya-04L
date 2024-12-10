@@ -35,6 +35,7 @@ public class carControl : NetworkBehaviour
         Debug.Log("CarControl start");
  
         position = transform.position;
+        globalVariables.playerSpeed = globalVariables.offsetValue = 0;
 
         if (IsOwner){
             Debug.Log("StartCoroutine");
