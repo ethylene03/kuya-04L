@@ -11,6 +11,8 @@ using Kuya04LPlayer;
 using System.Collections.Generic;
 using QFSW.QC;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class NetworkManagerController : MonoBehaviour
@@ -52,11 +54,6 @@ public class NetworkManagerController : MonoBehaviour
         // Handles multiplayer networking
         unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 
-          
-        if (playBtnScript != null)
-        {
-            playBtnScript.TriggerOnClick = HandleStartButton;
-        }
     }
 
     public void StopBroadcastStartGame(){
@@ -105,6 +102,8 @@ public class NetworkManagerController : MonoBehaviour
             Debug.Log("There is active game session in ip: " + hostIp);
             JoinGame();
         }
+
+        SceneManager.LoadScene("players-board");
     }
 
 
@@ -308,4 +307,33 @@ public class NetworkManagerController : MonoBehaviour
         }
 
     }
+
+    public void RestartNetworkManager(){
+        Debug.Log("Restarting NetworkManager...");
+
+        // Stop broadcasting if it's active
+        if (broadcastManager != null){
+            StopBroadcastStartGame();
+        }
+
+        // Stop the NetworkManager session
+        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient){
+            NetworkManager.Singleton.Shutdown(); // Stops the network session
+        }
+
+        // Reset relevant fields and states
+        isSearchingGame = true;
+        hostIp = string.Empty; // Reset the host IP to search for a new session
+        gameConstants = new GameConstants();
+        unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+
+        // Reinitialize the BroadcastManager
+        broadcastManager = new BroadcastManager(gameConstants.START_GAME_PORT);
+        
+        broadcastManager.IsListening = true;
+        broadcastManager.HandleOnReceive = HandleBroadcastReceive;
+
+        Debug.Log("NetworkManager restarted successfully. Ready to host or join a new session.");
+    }
+
 }

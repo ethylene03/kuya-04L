@@ -17,7 +17,6 @@ public class UserDisplayController : MonoBehaviour
 
     // Parent where player prefabs will be instantiated
     [SerializeField] private  Transform playerListParent;
-    [SerializeField] private playBtn startBtnScript;
     [SerializeField] private GameObject playBtn;
     [SerializeField] private GameObject maxPlayersPrefab;
 
@@ -42,20 +41,6 @@ public class UserDisplayController : MonoBehaviour
         }
 
         UpdatePlayerBoard();
-
-        // startBtnScript.TriggerOnClick = HandleStartButton;
-        
-
-        // var button = playBtn.GetComponent<UnityEngine.UI.Button>();
-        // Debug.Log("Button here "+ button);
-        //     if (button != null)
-        //     {
-        //         button.onClick.AddListener(HandleStartButton);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError("The assigned GameObject does not have a Button component.");
-        //     }
         
         
     }
@@ -95,6 +80,16 @@ public class UserDisplayController : MonoBehaviour
         {
             string sceneName = "straight-road";
             NetworkManager.Singleton.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
+        }
+    }
+
+    public void HandleBackButton(){
+        Debug.Log("BackButton");
+
+        if (NetworkManagerController.Instance != null){
+            SceneManager.LoadScene("home");
+            NetworkManagerController.Instance.RestartNetworkManager();
+            
         }
     }
 

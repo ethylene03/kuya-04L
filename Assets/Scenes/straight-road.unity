@@ -993,6 +993,7 @@ MonoBehaviour:
   minY: -4.5
   minDelay: 0
   maxDelay: 3
+  playerCar: {fileID: 0}
 --- !u!4 &342016800
 Transform:
   m_ObjectHideFlags: 0
@@ -1048,6 +1049,7 @@ MonoBehaviour:
   maxPos: -1.5
   minPos: -6
   delayTimer: 2
+  playerCar: {fileID: 0}
 --- !u!4 &391189843
 Transform:
   m_ObjectHideFlags: 0

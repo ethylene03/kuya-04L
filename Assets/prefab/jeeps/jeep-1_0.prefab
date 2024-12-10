@@ -206,8 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   carSpeed: 5
-  maxPlayerSpeed: 0.01
-  playerSpeed:
+  currentOffset:
     m_InternalValue: 0
   syncedPosition:
     m_InternalValue: {x: 0, y: 0, z: 0}
@@ -236,7 +235,7 @@ MonoBehaviour:
   SyncRotAngleX: 1
   SyncRotAngleY: 1
   SyncRotAngleZ: 1
-  SyncScaleX: 1
+  SyncScaleX: 0
   SyncScaleY: 1
   SyncScaleZ: 1
   PositionThreshold: 0.001
