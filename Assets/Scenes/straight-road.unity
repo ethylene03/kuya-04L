@@ -781,8 +781,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281874488
-  m_fontColor: {r: 0.21960784, g: 0.21960784, b: 0.21960784, a: 1}
+    rgba: 4284440415
+  m_fontColor: {r: 0.37254903, g: 0.37254903, b: 0.37254903, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1462,6 +1462,8 @@ MonoBehaviour:
   - 20
   gameOverText: {fileID: 0}
   playerCar: {fileID: 0}
+  winText: {fileID: 311927274}
+  loseText: {fileID: 1329555575}
 --- !u!1 &592147204
 GameObject:
   m_ObjectHideFlags: 0

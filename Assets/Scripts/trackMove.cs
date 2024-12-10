@@ -1,3 +1,4 @@
+using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,10 @@ public class trackMove : MonoBehaviour
     private int landmarkIdx;
     public GameObject gameOverText;
     public carControl playerCar;
+    private BroadcastManager broadcastManager;
+    private GameConstants gameConstants;
+    public GameObject winText;
+    public GameObject loseText;
 
 
     void SpawnObjectAtOffset(GameObject obj)
@@ -22,6 +27,14 @@ public class trackMove : MonoBehaviour
     }
 
     void Start() {
+        Debug.Log("trackMove Start");
+        gameConstants = new GameConstants();
+        Debug.Log("gameConstants " + gameConstants);
+        broadcastManager = new BroadcastManager(gameConstants.GAME_OVER_PORT);
+        broadcastManager.HandleOnReceive = EndGame;
+        broadcastManager.IsListening = true;
+        Debug.Log("broadcastManager " + broadcastManager);
+
         playerCar.currentOffset.Value = 0;
         spawnCrossingAt = Random.Range(playerCar.currentOffset.Value + 5f, playerCar.currentOffset.Value + 15f);
         spawnLandmarksAt = Random.Range(landmarkDistance[0], landmarkDistance[1]);
@@ -58,13 +71,16 @@ public class trackMove : MonoBehaviour
             }
 
             // spawn landmarks
-            float maxDistance = 50f;
+            float maxDistance = 10f;
             if(playerCar.currentOffset.Value >= maxDistance) {
                 // abot na sa SM
                 SpawnObjectAtOffset(landmarks[3]);
 
                 // end game
-                EndGame();
+                broadcastManager.IsListening = false;
+                broadcastManager.SendBroadcast(gameConstants.GAME_OVER_LOSE);
+  
+                EndGame(gameConstants.GAME_OVER_WIN);
             } else if(playerCar.currentOffset.Value >= spawnLandmarksAt && landmarkIdx < 3) {
                 SpawnObjectAtOffset(landmarks[landmarkIdx]);
                 spawnLandmarksAt = Random.Range(playerCar.currentOffset.Value + landmarkDistance[0], playerCar.currentOffset.Value + landmarkDistance[1]);
@@ -83,12 +99,28 @@ public class trackMove : MonoBehaviour
         GetComponent<Renderer> ().material.mainTextureOffset = offset;
     }
 
-    void EndGame() {
+    void EndGame(string receivedMessage = null, IPEndPoint endPoint = null) {
+        Debug.Log("EndGame "+ receivedMessage);
         globalVariables.startGame = false;
-        if(gameOverText != null)
-            gameOverText.SetActive(true);
+        
+        if(loseText == null || winText == null) return;
+        
+        Debug.Log("endgame 2");
+        Debug.Log("gameConstants "  + gameConstants);
+        gameConstants = new GameConstants();
+        
+        if(receivedMessage == gameConstants.GAME_OVER_WIN){
+            winText.SetActive(true);
+            loseText.SetActive(false);
+        } else if (receivedMessage == gameConstants.GAME_OVER_LOSE) {
+            winText.SetActive(false);
+            loseText.SetActive(true);
+        }
+        
+        
         Time.timeScale = 0;
-        new WaitForSeconds(0.5f);
+        new WaitForSecondsRealtime(5f);
+        SceneManager.LoadScene("players-board");
     }
 
     void AdjustOpponentCars(){
