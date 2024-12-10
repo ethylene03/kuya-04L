@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class trackMove : MonoBehaviour
 {
@@ -80,6 +81,8 @@ public class trackMove : MonoBehaviour
         if(gameOverText != null)
             gameOverText.SetActive(true);
         Time.timeScale = 0;
+        new WaitForSeconds(0.5f);
+        SceneManager.LoadScene("rank-board");
     }
 
     void AdjustOpponentCars(){
