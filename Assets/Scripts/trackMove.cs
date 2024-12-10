@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -61,16 +62,18 @@ public class trackMove : MonoBehaviour
             }
 
             // spawn landmarks
-            if(playerCar.currentOffset.Value >= spawnLandmarksAt) {
+            float maxDistance = 50f;
+            if(playerCar.currentOffset.Value >= maxDistance) {
+                // abot na sa SM
+                SpawnObjectAtOffset(landmarks[3]);
+
+                // end game
+                EndGame();
+            } else if(playerCar.currentOffset.Value >= spawnLandmarksAt && landmarkIdx < 3) {
                 SpawnObjectAtOffset(landmarks[landmarkIdx]);
                 spawnLandmarksAt = Random.Range(playerCar.currentOffset.Value + landmarkDistance[0], playerCar.currentOffset.Value + landmarkDistance[1]);
 
-                if(landmarkIdx == 3) {
-                    // end game
-                    globalVariables.startGame = false;
-                    EndGame();
-                } else
-                    landmarkIdx = (landmarkIdx + 1) % 4;
+                landmarkIdx = (landmarkIdx + 1) % 4;
             }
         } else {
             Time.timeScale = 0;
@@ -78,11 +81,11 @@ public class trackMove : MonoBehaviour
     }
 
     void EndGame() {
+        globalVariables.startGame = false;
         if(gameOverText != null)
             gameOverText.SetActive(true);
         Time.timeScale = 0;
         new WaitForSeconds(0.5f);
-        SceneManager.LoadScene("rank-board");
     }
 
     void AdjustOpponentCars(){

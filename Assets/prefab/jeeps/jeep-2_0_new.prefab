@@ -511,6 +511,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   carSpeed: 5
+  currentOffset:
+    m_InternalValue: 0
+  syncedPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
   maxPos: 6
   controls: {fileID: 0}
 --- !u!114 &8677108656037949021
@@ -1011,6 +1015,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   carSpeed: 5
+  currentOffset:
+    m_InternalValue: 0
+  syncedPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
   maxPos: 6
   controls: {fileID: 0}
 --- !u!114 &7082327381942875655
