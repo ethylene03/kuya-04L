@@ -5,12 +5,21 @@ public class PeopleControl : MonoBehaviour
     public float baseSpeed;
     private float speed;
     public carControl playerCar;
+    public AudioClip pickupSound; // Add a public field for the sound effect
+    private AudioSource audioSource;
 
     void Start()
     {
         // randomize base speed
         baseSpeed = Random.Range(-3f, 3f);
         // baseSpeed = 5f;
+
+        // Get the AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource component missing on this GameObject.");
+        }
     }
 
     void Update()
@@ -35,6 +44,12 @@ public class PeopleControl : MonoBehaviour
             Debug.Log("Picked up!");
             // destroy current object
             Destroy(gameObject);
+
+            // play sound effect
+            if (audioSource != null || pickupSound != null)
+            {
+                audioSource.PlayOneShot(pickupSound);
+            }
 
             // add offset
             if(playerCar.IsOwner) {
