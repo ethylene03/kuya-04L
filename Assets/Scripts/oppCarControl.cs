@@ -17,7 +17,7 @@ public class oppCarControl : MonoBehaviour
     void Update()
     {
         // get speed relative to player's speed
-        speed = baseSpeed + (globalVariables.playerSpeed * 500);
+        speed = baseSpeed + (globalVariables.playerSpeed * 0.5f);
         // Debug.Log("oppSpeed: " + speed + ", ur speed: " + globalVariables.playerSpeed);
 
         // set speed
