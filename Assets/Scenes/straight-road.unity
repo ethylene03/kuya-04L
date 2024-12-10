@@ -1552,6 +1552,7 @@ MonoBehaviour:
   - 10
   - 20
   gameOverText: {fileID: 592147204}
+  playerCar: {fileID: 0}
 --- !u!1 &592147204
 GameObject:
   m_ObjectHideFlags: 0

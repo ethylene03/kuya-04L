@@ -7,6 +7,7 @@ public class carSpawner : MonoBehaviour
     public float maxPos = -1.0f;
     public float minPos = -5.3f;
     public float delayTimer = 2f;
+    public carControl playerCar;
 
     private float prevSpeed = 0;
 
@@ -37,6 +38,7 @@ public class carSpawner : MonoBehaviour
                 if(carScript != null) {
                     carScript.BaseSpeed = prevSpeed;
                     prevSpeed = carScript.BaseSpeed;
+                    carScript.playerCar = this.playerCar;
                 }
                 
                 // set timer back to delay time

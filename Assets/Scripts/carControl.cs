@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using QFSW.QC;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -9,6 +10,10 @@ using UnityEngine.UIElements;
 public class carControl : NetworkBehaviour
 {
     public float carSpeed = 5.0f;
+    public float maxPlayerSpeed = 0.01f;
+    private float lerpSpeed = 5.0f;
+    public NetworkVariable<float> playerSpeed = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    public NetworkVariable<Vector3> syncedPosition = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     // scale is: 1 kph = 0.00041 units (MAX 120 kph = MAX 0.05)
     // acceleration interval would be about 1 kph
@@ -26,23 +31,32 @@ public class carControl : NetworkBehaviour
 
     void Start()
     {
+        Debug.Log("CarControl start");
  
         position = transform.position;
-        StartCoroutine(SetupControlsWithDelay());
+
+        if (IsOwner){
+            Debug.Log("StartCoroutine");
+            StartCoroutine(SetupControlsWithDelay());
+        }
 
     }
 
     IEnumerator SetupControlsWithDelay()
     {
         // Wait for a short delay (you can adjust the time as needed)
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.7f);
         SetupJoystick();
         SetupAccelerate();
         SetupBrake();
+        SetupBackground();
+        // SetupCarSpawner();
+        // SetupSpawnPedestrian();
     }
 
 
     private void SetupJoystick(){
+        Debug.Log("Setup Joystick");
 
         if(movementJoystick == null && IsOwner){
             movementJoystick = FindFirstObjectByType<Joystick>();
@@ -54,6 +68,8 @@ public class carControl : NetworkBehaviour
     }
 
     private void SetupAccelerate(){
+        Debug.Log("Setup Accelerator");
+
         GameObject accelerator = GameObject.Find("Accelerate");
 
         if (accelerator == null){
@@ -84,7 +100,9 @@ public class carControl : NetworkBehaviour
         eventTrigger.triggers.Add(pointerUp);
     }
 
-        private void SetupBrake(){
+    private void SetupBrake(){
+        Debug.Log("Setup Brake");
+
         GameObject brake = GameObject.Find("Brake");
 
         if (brake == null){
@@ -115,6 +133,19 @@ public class carControl : NetworkBehaviour
         eventTrigger.triggers.Add(pointerUp);
     }
 
+    private void SetupBackground(){
+        
+        Debug.Log("Background");
+
+        trackMove track = FindFirstObjectByType<trackMove>();
+        track.playerCar = this;
+
+        carSpawner carSpawner = FindFirstObjectByType<carSpawner>();
+        carSpawner.playerCar = this;
+
+        SpawnPedestrian pedSpawner = FindFirstObjectByType<SpawnPedestrian>();
+        pedSpawner.playerCar = this;
+    }
 
     [Command]
     public void InstantiateControls(){
@@ -130,35 +161,39 @@ public class carControl : NetworkBehaviour
 
     void Update()
     {
-        if(!IsOwner || !movementJoystick){ 
-            // Debug.Log("Not the owner");
-            return;
+
+        if (IsOwner){
+            if(movementJoystick == null) {
+                position.x += Input.GetAxis("Horizontal") * carSpeed * Time.deltaTime;
+            } else{
+                position.x += movementJoystick.Direction.x * carSpeed * Time.deltaTime;
+            }
+
+            position.x = Mathf.Clamp (position.x, -maxPos, maxPos);
+            transform.position = position;
+            Debug.Log("IsOwner" + OwnerClientId + " " + transform.position);
+
+            syncedPosition.Value = transform.position;
+
+
+            if(isAccelerating) {
+                Accelerate();
+            }
+
+            if(isBraking) {
+                Brake();
+            }
+
+            if(isSlowingDown) {
+                SlowDown();
+            }
+        } else {
+            // transform.position = Vector3.Lerp(transform.position, syncedPosition.Value, Time.deltaTime * lerpSpeed);
+            // Debug.Log("NOT IsOwner" + OwnerClientId + " " + transform.position);
         }
 
         
-        if(movementJoystick.Direction.x == 0) {
-            position.x += Input.GetAxis("Horizontal") * carSpeed * Time.deltaTime;
-        } else{
-            position.x += movementJoystick.Direction.x * carSpeed * Time.deltaTime;
-        }
-  
-        position.x = Mathf.Clamp (position.x, -maxPos, maxPos);
-        // Debug.Log("position.x after " + position.x);
-        // Debug.Log("transform.position before: " + transform.position);
-        transform.position = position;
-        // Debug.Log("transform.position after: " + transform.position);
 
-        if(isAccelerating) {
-            Accelerate();
-        }
-
-        if(isBraking) {
-            Brake();
-        }
-
-        if(isSlowingDown) {
-            SlowDown();
-        }
     }
 
     void OnCollisionEnter2D(Collision2D col) {
@@ -172,27 +207,27 @@ public class carControl : NetworkBehaviour
     }
 
     private void Accelerate() {
-        if(globalVariables.playerSpeed < globalVariables.maxPlayerSpeed) {
-            float speed = globalVariables.playerSpeed + accelerateInterval * Time.deltaTime;
-            globalVariables.playerSpeed = Mathf.Max(0, speed);
+        if(playerSpeed.Value < maxPlayerSpeed) {
+            float speed = playerSpeed.Value + accelerateInterval * Time.deltaTime;
+            playerSpeed.Value = Mathf.Max(0, speed);
         }
     }
 
     private void SlowDown() {
-        if(globalVariables.playerSpeed > accelerateInterval) {
-            float speed = globalVariables.playerSpeed - (accelerateInterval * Time.deltaTime);
-            globalVariables.playerSpeed = Mathf.Max(0, speed);
+        if(playerSpeed.Value > accelerateInterval) {
+            float speed = playerSpeed.Value - (accelerateInterval * Time.deltaTime);
+            playerSpeed.Value = Mathf.Max(0, speed);
         } else {
-            globalVariables.playerSpeed = 0;
+            playerSpeed.Value = 0;
         }
     }
 
     private void Brake() {
-        if(globalVariables.playerSpeed > breakInterval) {
-            float speed = globalVariables.playerSpeed - (breakInterval * Time.deltaTime);
-            globalVariables.playerSpeed = Mathf.Max(0, speed);
+        if(playerSpeed.Value > breakInterval) {
+            float speed = playerSpeed.Value - (breakInterval * Time.deltaTime);
+            playerSpeed.Value = Mathf.Max(0, speed);
         } else {
-            globalVariables.playerSpeed = 0;
+            playerSpeed.Value = 0;
         }
     }
 

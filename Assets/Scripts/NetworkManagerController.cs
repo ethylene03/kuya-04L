@@ -86,7 +86,7 @@ public class NetworkManagerController : MonoBehaviour
         {
             if (
                 networkInterface.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork 
-                && networkInterface.ToString().StartsWith("192")
+                // && networkInterface.ToString().StartsWith("192")
             )
             {
                 return networkInterface.ToString();

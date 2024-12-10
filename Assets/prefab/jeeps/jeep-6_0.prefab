@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: -6911890207357854344}
   m_Layer: 0
   m_Name: jeep-6_0
-  m_TagString: Untagged
+  m_TagString: PlayerCar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -316,6 +316,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   carSpeed: 5
+  maxPlayerSpeed: 0.01
+  playerSpeed:
+    m_InternalValue: 0
+  syncedPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
   maxPos: 6
   controls: {fileID: 1945078251285101687, guid: b612d0064ac1e485d918e1a698e4a93a, type: 3}
 --- !u!114 &-3686186577869734769

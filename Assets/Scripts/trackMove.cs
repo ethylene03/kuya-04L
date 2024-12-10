@@ -10,6 +10,7 @@ public class trackMove : MonoBehaviour
     private float spawnLandmarksAt;
     private int landmarkIdx;
     public GameObject gameOverText;
+    public carControl playerCar;
 
 
     void SpawnObjectAtOffset(GameObject obj)
@@ -30,18 +31,27 @@ public class trackMove : MonoBehaviour
             globalVariables.startGame = !globalVariables.startGame;
         }
 
+        if (!playerCar){
+            Debug.Log("PlayerCar not attached.");
+            return;
+        }
+
         if(globalVariables.startGame) {
             Time.timeScale = 1;
 
             // calculate offset base on player speed
-            float offsetValue = Mathf.Clamp(globalVariables.playerSpeed, 0, globalVariables.maxPlayerSpeed);
+            float offsetValue = Mathf.Clamp(playerCar.playerSpeed.Value, 0, playerCar.maxPlayerSpeed);
             globalVariables.offsetValue = offsetValue;
             globalVariables.currentOffset += offsetValue;
-            // Debug.Log("speed: " + globalVariables.playerSpeed + ", offset: " + offsetValue + ", currOffset: " + globalVariables.currentOffset);
+            // Debug.Log("speed: " + playerCar.playerSpeed.Value + ", offset: " + offsetValue + ", currOffset: " + globalVariables.currentOffset);
             
             // set track to move
             offset = new Vector2(0, globalVariables.currentOffset);
+            Debug.Log("trackMove offset: " + offset);
+            
             GetComponent<Renderer> ().material.mainTextureOffset = offset;
+
+            AdjustOpponentCars();
 
             // spawn crossing
             if(globalVariables.currentOffset >= spawnCrossingAt) {
@@ -71,4 +81,20 @@ public class trackMove : MonoBehaviour
             gameOverText.SetActive(true);
         Time.timeScale = 0;
     }
+
+    void AdjustOpponentCars(){
+        // Fetch all opponent cars and update their positions based on their synced speed
+    //    var opponentCars = GameObject.FindGameObjectsWithTag("PlayerCar");
+       
+    //     foreach (var car in opponentCars)
+    //     {
+    //         carControl carObj = car.GetComponent<carControl>();
+    //         if (!carObj.IsOwner)
+    //         {
+    //             float opponentSpeed = carObj.playerSpeed.Value;
+    //             car.transform.position += Vector3.up * opponentSpeed * Time.deltaTime;
+    //         }
+    //     }
+    }
+
 }

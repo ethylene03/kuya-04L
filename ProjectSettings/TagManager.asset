@@ -7,6 +7,7 @@ TagManager:
   - EnemyCar
   - People
   - Crossing
+  - PlayerCar
   layers:
   - Default
   - TransparentFX

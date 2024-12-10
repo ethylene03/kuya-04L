@@ -10,6 +10,7 @@ public class SpawnPedestrian : MonoBehaviour
     public float minY = -4.5f;
     public float minDelay = 0f;
     public float maxDelay = 2f;
+    public carControl playerCar;
 
     private float timer;
 
@@ -32,7 +33,9 @@ public class SpawnPedestrian : MonoBehaviour
                 Vector3 position = new Vector3(Random.Range(minX[xval], maxX[xval]), Random.Range(minY, maxY), transform.position.z);
                 
                 // spawn car
-                Instantiate (people[idx], position, transform.rotation);
+                GameObject newPedestrian = Instantiate (people[idx], position, transform.rotation);
+                PeopleControl peopleScript = newPedestrian.GetComponent<PeopleControl>();
+                peopleScript.playerCar = this.playerCar;
                 
                 // set timer back to delay time
                 timer = Random.Range(minDelay, maxDelay + 1);
