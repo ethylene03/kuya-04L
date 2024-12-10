@@ -16,11 +16,11 @@ public class carControl : NetworkBehaviour
     public NetworkVariable<float> currentOffset = new NetworkVariable<float>(0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<Vector3> syncedPosition = new NetworkVariable<Vector3>(Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-    // scale is: 1 kph = 0.00041 units (MAX 120 kph = MAX 0.05)
-    // acceleration interval would be about 1 kph
-    // break interval would be about 24 kph
-    private float accelerateInterval = 0.0005f;
-    private float breakInterval = 0.01f;
+    // scale is: 1 kph = 0.0041 units (MAX 120 kph = MAX 0.5)
+    // acceleration interval would be about 2.4 kph
+    // break interval would be about 12 kph
+    private float accelerateInterval = 0.01f;
+    private float breakInterval = 0.05f;
     public float maxPos = 5.3f;
     
     Vector3 position;

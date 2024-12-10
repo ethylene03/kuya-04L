@@ -43,7 +43,7 @@ public class trackMove : MonoBehaviour
             float offsetValue = Mathf.Clamp(globalVariables.playerSpeed, 0, globalVariables.maxPlayerSpeed);
             globalVariables.offsetValue = offsetValue;
             playerCar.currentOffset.Value += offsetValue;
-            // Debug.Log("speed: " + playerCar.playerSpeed.Value + ", offset: " + offsetValue + ", currOffset: " + globalVariables.currentOffset);
+            Debug.Log("offset: " + offsetValue + ", currOffset: " + playerCar.currentOffset.Value);
             
             // set track to move
             offset = new Vector2(0, playerCar.currentOffset.Value);
@@ -101,11 +101,12 @@ public class trackMove : MonoBehaviour
         {
             carControl carObj = car.GetComponent<carControl>();
             Debug.Log("CarObj id: " + carObj.OwnerClientId);
+            Debug.Log("position: " + car.transform.position);
 
             if (!carObj.IsOwner)
             {
-                
-                car.transform.localPosition = new Vector3(car.transform.position.x, carObj.currentOffset.Value - playerCar.currentOffset.Value, car.transform.position.y);
+                float newY = (car.transform.position.y + carObj.currentOffset.Value - playerCar.currentOffset.Value) * Time.deltaTime;
+                car.transform.localPosition = new Vector3(car.transform.position.x, newY, car.transform.position.z);
             }
         }
     }
