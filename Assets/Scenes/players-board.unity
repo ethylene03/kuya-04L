@@ -558,8 +558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 5628668681036581687, guid: c4d5864623d3e4df48da8012b4356e84, type: 3}
   playerListParent: {fileID: 897378272}
-  backBtnScript: {fileID: 0}
-  playBtn: {fileID: 0}
+  playBtn: {fileID: 3871502717536500018}
   maxPlayersPrefab: {fileID: 284749139276191852}
 --- !u!224 &604706518
 RectTransform:
@@ -2375,6 +2374,11 @@ PrefabInstance:
       addedObject: {fileID: 1783353856}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
+--- !u!1 &3871502717536500018 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5644192934234462763, guid: 5757422cc04a84005aab021ee17d2878, type: 3}
+  m_PrefabInstance: {fileID: 3871502717536500017}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4096445075880235268
 PrefabInstance:
   m_ObjectHideFlags: 0

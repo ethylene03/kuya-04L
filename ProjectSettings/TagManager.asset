@@ -8,6 +8,8 @@ TagManager:
   - People
   - Crossing
   - PlayerCar
+  - WinText
+  - LoseText
   layers:
   - Default
   - TransparentFX

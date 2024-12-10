@@ -40,6 +40,10 @@ public class UserDisplayController : MonoBehaviour
     
         }
 
+        if(playBtn != null){
+            playBtn.SetActive(NetworkManager.Singleton.IsHost);
+        }
+
         UpdatePlayerBoard();
         
         

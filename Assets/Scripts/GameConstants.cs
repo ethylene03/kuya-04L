@@ -1,10 +1,13 @@
 public class GameConstants {
     private string startGameMessage = "KUYA04L_GAMEHOST";
-    private string newPlayerMessage = "KUYA04L_new_player";
+    private string newPlayerMessage = "KUYA04L_NEW_PLAYER";
     
-    private string exceedMaxClients = "EXCEED_MAX_CLIENTS";
+    private string exceedMaxClients = "KUYA04L_EXCEED_MAX_CLIENTS";
+    private string gameOverLoseMessage = "KUYA04L_GAME_OVER_LOSE";
+    private string gameOverWinMessage = "KUYA04L_GAME_OVER_WIN";
     private int startGamePort = 7778;
     private int newPlayerPort = 7780;
+    private int gameOverPort = 7782;
     private  int maxClients = 3;
 
     public string START_GAME_MESSAGE
@@ -52,12 +55,39 @@ public class GameConstants {
         }
     }
 
+    public int GAME_OVER_PORT {
+        get => gameOverPort;
+        set
+        {
+            gameOverPort = value;
+        }
+    }
+
     public string EXCEED_MAX_CLIENTS
     {
         get => exceedMaxClients;
         set
         {
             exceedMaxClients = value;
+        }
+    }
+
+
+    public string GAME_OVER_WIN
+    {
+        get => gameOverWinMessage;
+        set
+        {
+            gameOverWinMessage = value;
+        }
+    }
+
+    public string GAME_OVER_LOSE
+    {
+        get => gameOverLoseMessage;
+        set
+        {
+            gameOverLoseMessage = value;
         }
     }
 }

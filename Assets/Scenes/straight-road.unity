@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 311927276}
   m_Layer: 5
   m_Name: Win
-  m_TagString: Untagged
+  m_TagString: WinText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -874,8 +874,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281204480
-  m_fontColor: {r: 0, g: 1, b: 0.1772747, a: 1}
+    rgba: 4281874488
+  m_fontColor: {r: 0.21960784, g: 0.21960784, b: 0.21960784, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -892,8 +892,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 300
-  m_fontSizeBase: 300
+  m_fontSize: 299.91
+  m_fontSizeBase: 299.91
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1553,7 +1553,8 @@ MonoBehaviour:
   landmarkDistance:
   - 10
   - 20
-  gameOverText: {fileID: 592147204}
+  winText: {fileID: 311927274}
+  loseText: {fileID: 1329555575}
   playerCar: {fileID: 0}
 --- !u!1 &592147204
 GameObject:
@@ -2197,7 +2198,7 @@ GameObject:
   - component: {fileID: 1329555577}
   m_Layer: 5
   m_Name: Lose
-  m_TagString: Untagged
+  m_TagString: LoseText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
