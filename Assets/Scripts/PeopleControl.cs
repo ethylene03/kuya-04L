@@ -29,6 +29,8 @@ public class PeopleControl : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D obj) {
+        trackMove trackScript = GameObject.Find("Background").GetComponent<trackMove>();
+
         if(obj.gameObject.tag == "PlayerCar") {
             Debug.Log("Picked up!");
             // destroy current object
@@ -36,7 +38,10 @@ public class PeopleControl : MonoBehaviour
 
             // add offset
             if(playerCar.IsOwner) {
-                playerCar.currentOffset.Value += 1f;
+                playerCar.currentOffset.Value += 5f * Time.deltaTime;
+
+                if(trackScript != null)
+                    trackScript.MoveTrack();
             }
         }
     }

@@ -47,11 +47,7 @@ public class trackMove : MonoBehaviour
             playerCar.currentOffset.Value += offsetValue;
             Debug.Log("offset: " + offsetValue + ", currOffset: " + playerCar.currentOffset.Value);
             
-            // set track to move
-            offset = new Vector2(0, playerCar.currentOffset.Value);
-            Debug.Log("trackMove offset: " + offset);
-
-            GetComponent<Renderer> ().material.mainTextureOffset = offset;
+            MoveTrack();
 
             AdjustOpponentCars();
 
@@ -78,6 +74,13 @@ public class trackMove : MonoBehaviour
         } else {
             Time.timeScale = 0;
         }
+    }
+
+    public void MoveTrack() {
+        offset = new Vector2(0, playerCar.currentOffset.Value);
+        Debug.Log("trackMove offset: " + offset);
+
+        GetComponent<Renderer> ().material.mainTextureOffset = offset;
     }
 
     void EndGame() {
