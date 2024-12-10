@@ -5,14 +5,22 @@ public class MenuController : MonoBehaviour
 {
     public GameObject menu;
 
-    public void ShowMenu() {
+    public void ControlMenu(){
+        if(menu.activeSelf){
+            HideMenu();
+        } else {
+            ShowMenu();
+        }
+    }
+
+    private void ShowMenu() {
         if(menu != null) {
             menu.SetActive(true);
             globalVariables.startGame = false;
         }
     }
 
-    public void HideMenu() {
+    private void HideMenu() {
         if(menu != null) {
             menu.SetActive(false);
             globalVariables.startGame = true;

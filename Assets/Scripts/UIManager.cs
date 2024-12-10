@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text counter;
     private float timerTime = 0f;
 
-    private float startTime = 0f; 
+    private float startTime = 0f;
     public float countDown = 0f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
         if(countDown < 4) {
             countDown = Time.realtimeSinceStartup - startTime;
             changeCountDown((int)countDown);
-        } 
+        }
 
     }
 
@@ -61,7 +61,7 @@ public class UIManager : MonoBehaviour
                 counter.text = "GO!";
                 globalVariables.startGame = true;
                 break;
-            
+
             default:
                 counter.text = "";
                 globalVariables.startGame = true;
