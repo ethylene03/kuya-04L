@@ -235,11 +235,19 @@ public class NetworkManagerController : MonoBehaviour
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
             NetworkManager.Singleton.ConnectionApprovalCallback += OnConnectionApproval;
+            NetworkManager.Singleton.OnServerStopped += OnServerStop;
         }
     }
 
     private void OnClientDisconnected(ulong clientId){
         isSearchingGame = true;
+
+        Debug.Log("NetworkManagerController OnClientDisconnected " + clientId);
+
+        string rejectionReason = NetworkManager.Singleton.DisconnectReason;
+        if(rejectionReason == "Disconnected due to host shutting down." ){
+            RestartNetworkManager();
+        }
     }
 
     private void OnDisable()
@@ -248,6 +256,8 @@ public class NetworkManagerController : MonoBehaviour
             // Unsubscribe from events to prevent memory leaks
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
             NetworkManager.Singleton.ConnectionApprovalCallback -= OnConnectionApproval;
+            NetworkManager.Singleton.OnServerStopped -= OnServerStop;
+
         } 
 
     }
@@ -281,9 +291,16 @@ public class NetworkManagerController : MonoBehaviour
             // Reject connection if the limit is exceeded
             response.Approved = false;
             response.Pending = false;
+            response.Reason = gameConstants.EXCEED_MAX_CLIENTS;
+          
 
             Debug.LogWarning("Connection rejected. Server is full.");
         }
+    }
+
+    private void OnServerStop(bool stopped){
+        Debug.Log("Server stoped " + stopped);
+        RestartNetworkManager();
     }
 
 
@@ -310,6 +327,11 @@ public class NetworkManagerController : MonoBehaviour
 
     public void RestartNetworkManager(){
         Debug.Log("Restarting NetworkManager...");
+
+        if (SceneManager.GetActiveScene().name != "home")
+        {
+            SceneManager.LoadScene("home");
+        }
 
         // Stop broadcasting if it's active
         if (broadcastManager != null){

@@ -114,11 +114,16 @@ public class UserDisplayController : MonoBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        Debug.Log($"Client {clientId} disconnected.");
-        if(!NetworkManager.Singleton.IsHost){
+        string rejectionReason = NetworkManager.Singleton.DisconnectReason;
+
+        Debug.Log($"Client {clientId} disconnected. " + rejectionReason);
+        
+        if(!NetworkManager.Singleton.IsHost && rejectionReason == gameConstants.EXCEED_MAX_CLIENTS){
             ShowMaxPlayers();
             HidePlayerBoard();
             throw new SystemException ("Client cannot join. Probably exceed max client.");
+        } else {
+            NetworkManagerController.Instance.RestartNetworkManager();
         }
 
         BroadcastDisplayPlayers();
