@@ -51,7 +51,7 @@ public class trackMove : MonoBehaviour
 
             GetComponent<Renderer> ().material.mainTextureOffset = offset;
 
-            // AdjustOpponentCars();
+            AdjustOpponentCars();
 
             // spawn crossing
             if(playerCar.currentOffset.Value >= spawnCrossingAt) {
@@ -105,7 +105,7 @@ public class trackMove : MonoBehaviour
 
             if (!carObj.IsOwner)
             {
-                float newY = (car.transform.position.y + carObj.currentOffset.Value - playerCar.currentOffset.Value) * Time.deltaTime;
+                float newY = car.transform.position.y + ((carObj.currentOffset.Value - playerCar.currentOffset.Value) * 10);
                 car.transform.localPosition = new Vector3(car.transform.position.x, newY, car.transform.position.z);
             }
         }
