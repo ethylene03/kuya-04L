@@ -1,9 +1,11 @@
 public class GameConstants {
     private string startGameMessage = "KUYA04L_GAMEHOST";
     private string newPlayerMessage = "KUYA04L_new_player";
+    
+    private string exceedMaxClients = "EXCEED_MAX_CLIENTS";
     private int startGamePort = 7778;
     private int newPlayerPort = 7780;
-    private  int maxClients = 4;
+    private  int maxClients = 3;
 
     public string START_GAME_MESSAGE
     {
@@ -47,6 +49,15 @@ public class GameConstants {
         set
         {
             newPlayerPort = value;
+        }
+    }
+
+    public string EXCEED_MAX_CLIENTS
+    {
+        get => exceedMaxClients;
+        set
+        {
+            exceedMaxClients = value;
         }
     }
 }
