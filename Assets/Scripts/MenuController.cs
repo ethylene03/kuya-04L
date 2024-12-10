@@ -20,15 +20,17 @@ public class MenuController : MonoBehaviour
     }
 
     public void QuitGame() {
-        string targetScene = "home";
+        NetworkManagerController.Instance.RestartNetworkManager();
 
-        if (!string.IsNullOrEmpty(targetScene))
-        {
-            SceneManager.LoadScene(targetScene);
-        }
-        else
-        {
-            Debug.LogWarning("Target scene name is not set.");
-        }
+        // string targetScene = "home";
+
+        // if (!string.IsNullOrEmpty(targetScene))
+        // {
+        //     SceneManager.LoadScene(targetScene);
+        // }
+        // else
+        // {
+        //     Debug.LogWarning("Target scene name is not set.");
+        // }
     }
 }
