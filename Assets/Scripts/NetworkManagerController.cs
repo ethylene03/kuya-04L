@@ -26,6 +26,7 @@ public class NetworkManagerController : MonoBehaviour
 
     private GameConstants gameConstants = new GameConstants();
     private BroadcastManager broadcastManager;
+    public bool isGameActive = false;
 
     [SerializeField] private playBtn playBtnScript;
 
@@ -83,7 +84,7 @@ public class NetworkManagerController : MonoBehaviour
         {
             if (
                 networkInterface.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork 
-                // && networkInterface.ToString().StartsWith("192")
+                && networkInterface.ToString().StartsWith("192")
             )
             {
                 return networkInterface.ToString();
@@ -276,8 +277,11 @@ public class NetworkManagerController : MonoBehaviour
 
         // Check the current number of connected clients
         int connectedClients = NetworkManager.Singleton.ConnectedClients.Count;
-
-        if (connectedClients < gameConstants.MAX_CLIENTS)
+        if(isGameActive){
+            response.Approved = false;
+            response.Pending = false;
+            response.Reason = gameConstants.GAME_START;
+        } else if (connectedClients < gameConstants.MAX_CLIENTS)
         {
             // Approve connection but don't create player object automatically
             response.Approved = true;
@@ -345,7 +349,6 @@ public class NetworkManagerController : MonoBehaviour
 
         // Reset relevant fields and states
         isSearchingGame = true;
-        hostIp = string.Empty; // Reset the host IP to search for a new session
         gameConstants = new GameConstants();
         unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 
