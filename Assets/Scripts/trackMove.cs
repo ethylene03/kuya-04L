@@ -136,7 +136,7 @@ public class trackMove : MonoBehaviour
         messageQueue.Enqueue(receivedMessage);
     }
 
-    void EndGame(string receivedMessage = null) {
+    public void EndGame(string receivedMessage = null) {
         try {
             if(isWinner && receivedMessage == gameConstants.GAME_OVER_LOSE) return;
             Debug.Log("EndGame "+ receivedMessage);
