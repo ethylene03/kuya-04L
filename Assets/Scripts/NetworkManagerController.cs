@@ -343,8 +343,10 @@ public class NetworkManagerController : MonoBehaviour
         }
 
         // Stop the NetworkManager session
-        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient){
+        if (NetworkManager.Singleton.IsHost){
             NetworkManager.Singleton.Shutdown(); // Stops the network session
+        } else if (NetworkManager.Singleton.IsClient){
+            NetworkManager.Singleton.DisconnectClient(NetworkManager.Singleton.LocalClientId);
         }
 
         // Reset relevant fields and states

@@ -41,8 +41,6 @@ public class UserDisplayController : MonoBehaviour
         }
 
         if(playBtn != null){
-            playBtn.SetActive(NetworkManager.Singleton.IsHost);
-
             checkClientCount();
         }
 
@@ -56,7 +54,7 @@ public class UserDisplayController : MonoBehaviour
         if(clientCount <= 1){
             playBtn.SetActive(false);
         } else {
-            playBtn.SetActive(true);
+            playBtn.SetActive(NetworkManager.Singleton.IsHost);
         }
     }
 
