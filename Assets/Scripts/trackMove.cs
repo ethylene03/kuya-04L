@@ -88,7 +88,7 @@ public class trackMove : MonoBehaviour
             }
 
             // spawn landmarks
-            float maxDistance = 10f;
+            float maxDistance = 50f;
             if(playerCar.currentOffset.Value >= maxDistance) {
                 // abot na sa SM
                 SpawnObjectAtOffset(landmarks[3]);

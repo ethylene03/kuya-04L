@@ -9,7 +9,7 @@ public class GameConstants {
     private int startGamePort = 7778;
     private int newPlayerPort = 7780;
     private int gameOverPort = 7782;
-    private  int maxClients = 3;
+    private  int maxClients = 4;
 
     public string START_GAME_MESSAGE
     {
