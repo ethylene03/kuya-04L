@@ -132,7 +132,7 @@ public class trackMove : MonoBehaviour
         GetComponent<Renderer> ().material.mainTextureOffset = offset;
     }
 
-    void broadcastReceive(string receivedMessage = null, IPEndPoint endPoint = null){
+    public void broadcastReceive(string receivedMessage = null, IPEndPoint endPoint = null){
         messageQueue.Enqueue(receivedMessage);
     }
 
